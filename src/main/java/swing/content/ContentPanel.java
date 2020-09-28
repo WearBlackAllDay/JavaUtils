@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class ContentPanel {
 
-    public static JPanel gridPanel(int xSize, int ySize, Component content) throws IllegalAccessException, InstantiationException {
+    public static JPanel gridPanel(int xSize, int ySize, Component content) {
         JPanel jPanel = new JPanel();
         jPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -13,7 +13,11 @@ public class ContentPanel {
             gbc.gridx = x;
             for (int y = 0; y < ySize; y++) {
                 gbc.gridy = y;
-                jPanel.add(content.getClass().newInstance(), gbc);
+                try {
+                    jPanel.add(content.getClass().newInstance(), gbc);
+                } catch (InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return jPanel;

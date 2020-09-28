@@ -19,8 +19,16 @@ public class Strings {
         return Arrays.stream(splitLines(input)).mapToInt(Integer::parseInt).toArray();
     }
 
+    public static int[] splitToInts(String input, String regex) {
+        return Arrays.stream(input.split(regex)).mapToInt(Integer::parseInt).toArray();
+    }
+
     public static long[] splitToLongs(String input) {
         return Arrays.stream(splitLines(input)).mapToLong(Long::parseLong).toArray();
+    }
+
+    public static long[] splitToLongs(String input, String regex) {
+        return Arrays.stream(input.split(regex)).mapToLong(Long::parseLong).toArray();
     }
 
     public static int[] readIntArray(String input) {
