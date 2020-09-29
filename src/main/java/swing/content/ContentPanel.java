@@ -2,10 +2,11 @@ package swing.content;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.function.Supplier;
 
 public class ContentPanel {
 
-    public static JPanel gridPanel(int xSize, int ySize, Component content) {
+    public static JPanel gridPanel(int xSize, int ySize, Supplier<Component> componentSupplier) {
         JPanel jPanel = new JPanel();
         jPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -13,11 +14,7 @@ public class ContentPanel {
             gbc.gridx = x;
             for (int y = 0; y < ySize; y++) {
                 gbc.gridy = y;
-                try {
-                    jPanel.add(content.getClass().newInstance(), gbc);
-                } catch (InstantiationException | IllegalAccessException e) {
-                    e.printStackTrace();
-                }
+                jPanel.add(componentSupplier.get(), gbc);
             }
         }
         return jPanel;

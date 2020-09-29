@@ -10,7 +10,7 @@ public class BooleanPacker {
 
     public BooleanPacker(int capacity) {
         this.capacity = capacity;
-        this.storage = new long[setStorageLength(capacity)];
+        this.storage = new long[this.setStorageLength(capacity)];
     }
 
     public boolean getIndex(int index) {
@@ -20,9 +20,9 @@ public class BooleanPacker {
 
     public void setIndex(int index, boolean state) {
         this.verifyRange(index);
-        if (getIndex(index) && !state) {
+        if (this.getIndex(index) && !state) {
             this.storage[index / 64] &= ~ 1 << index % 64;
-        } else if (!getIndex(index) && state){
+        } else if (!this.getIndex(index) && state){
             this.storage[index / 64] |= 1 << index % 64;
         }
     }
@@ -34,7 +34,7 @@ public class BooleanPacker {
 
     public void fillBooleans(boolean[] booleans) {
         for (int i = 0; i < booleans.length; i++) {
-            setIndex(i, booleans[i]);
+            this.setIndex(i, booleans[i]);
         }
     }
 
@@ -55,9 +55,17 @@ public class BooleanPacker {
     public boolean[] toArray() {
         boolean[] array = new boolean[this.capacity];
         for (int i = 0; i < array.length; i++) {
-            array[i] = getIndex(i);
+            array[i] = this.getIndex(i);
         }
         return array;
+    }
+
+    public String toString() {
+        String string = "";
+        for (int i = 0; i < this.capacity; i++) {
+            string = string.concat(this.getIndex(i) ? "1" : "0");
+        }
+        return string;
     }
 
     public long[] getStorage() {

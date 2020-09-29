@@ -13,5 +13,6 @@ public class TestLongPack {
 //        System.out.println(testPack.getIndex(4));
         System.out.println(Arrays.toString(testPack.toArray()));
         System.out.println(Arrays.toString(testPack.getStorage()));
+        System.out.println(testPack.toString());
     }
 }
