@@ -12,7 +12,7 @@ public class ThreadPool {
     static ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     static String callingClass = null;
 
-    public static void execute(Runnable task) {
+    public static void run(Runnable task) {
         String presentClass = new Throwable().getStackTrace()[1].getClassName();
         presentClass = "Thread " + Thread.currentThread().getId() + ": " + presentClass;
         if (callingClass == null) {
@@ -26,15 +26,19 @@ public class ThreadPool {
     }
 
     public static <T> void execute(Iterable<T> iterable, Consumer<T> task) {
-        iterable.forEach(t -> execute(() -> task.accept(t)));
+        iterable.forEach(t -> run(() -> task.accept(t)));
     }
 
     public static <T> void executeIteration(Iterable<T> iterable, Consumer<T> task) {
-        execute(iterable, Collections::singleton, task);
+        flatIterate(iterable, Collections::singleton, task);
     }
 
-    public static <T> void execute(Iterable<T> iterable, Function<T, Iterable<T>> mapper, Consumer<T> task) {
-        iterable.forEach(t -> execute(() -> mapper.apply(t).forEach(task)));
+    public static <T> void flatIterate(Iterable<T> iterable, Function<T, Iterable<T>> mapper, Consumer<T> task) {
+        iterable.forEach(t -> run(() -> mapper.apply(t).forEach(task)));
+    }
+
+    public static <T> void execute(T[] array, Consumer<T> action) {
+        for(T t: array)run(() -> action.accept(t));
     }
 
     public static void finish() {

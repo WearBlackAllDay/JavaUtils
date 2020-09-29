@@ -3,6 +3,7 @@ package swing.content;
 import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.function.Supplier;
 
 public class GridPanel<C extends Component> extends JPanel {
@@ -31,10 +32,6 @@ public class GridPanel<C extends Component> extends JPanel {
 
     public C componentAt(int x, int y) {
         return (C)this.components[x][y];
-    }
-
-    public C[][] allComponents() {
-        return (C[][]) this.components;
     }
 
     public int xSize() {
