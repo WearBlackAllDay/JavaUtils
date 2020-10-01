@@ -38,4 +38,8 @@ public class Strings {
     public static long[] readLongArray(String input) {
         return Stream.of(input.replaceAll("[\\[\\]\\ ]", "").split(",")).mapToLong(Long::parseLong).toArray();
     }
+
+    public static int countLines(String input) {
+        return splitLines(input).length;
+    }
 }

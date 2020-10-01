@@ -1,5 +1,7 @@
 package data.packing;
 
+import data.Strings;
+
 public class BooleanPacker {
     private final int capacity;
     private final long[] storage;
@@ -10,7 +12,19 @@ public class BooleanPacker {
 
     public BooleanPacker(int capacity) {
         this.capacity = capacity;
-        this.storage = new long[this.setStorageLength(capacity)];
+        this.storage = new long[this.setStorageLength(this.capacity)];
+    }
+
+    public BooleanPacker(boolean[] booleans) {
+        this.capacity = booleans.length;
+        this.storage = new long[this.setStorageLength(this.capacity)];
+        this.fillBooleans(booleans);
+    }
+
+    public BooleanPacker(String binary) {
+        this.capacity = this.splitBinary(binary).length;
+        this.storage = new long[this.setStorageLength(this.capacity)];
+        this.fillString(binary);
     }
 
     public boolean getIndex(int index) {
@@ -38,18 +52,25 @@ public class BooleanPacker {
         }
     }
 
-    private int setStorageLength(int capacity) {
-        if (capacity % 64 != 0) {
-            return capacity / 64 + 1;
-        } else {
-            return capacity / 64;
+    public void fillString(String binary) {
+        int[] array = this.splitBinary(binary);
+        for (int i = 0; i < array.length; i++) {
+            this.setIndex(i, array[i] == '1');
         }
+    }
+
+    private int setStorageLength(int capacity) {
+        return capacity / 64 + capacity % 64 != 0 ? 1 : 0;
     }
 
     private void verifyRange(int index) {
         if (index >= this.capacity || index < 0) {
             throw new IndexOutOfBoundsException("Index out of Bounds");
         }
+    }
+
+    private int[] splitBinary(String binary) {
+        return binary.replaceAll("[^0-1]","").chars().toArray();
     }
 
     public boolean[] toArray() {

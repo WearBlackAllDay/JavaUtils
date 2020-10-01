@@ -11,7 +11,6 @@ public class GridPanel<C extends Component> extends JPanel {
     private final int xSize, ySize;
     private final Component[][] components;
 
-
     public GridPanel(int xSize, int ySize, Supplier<Component> componentSupplier) {
         this.xSize = xSize;
         this.ySize = ySize;
