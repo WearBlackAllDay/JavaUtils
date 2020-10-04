@@ -1,7 +1,5 @@
 package data.packing;
 
-import data.Strings;
-
 public class BooleanPacker {
     private final int capacity;
     private final long[] storage;
@@ -15,7 +13,7 @@ public class BooleanPacker {
         this.storage = new long[this.setStorageLength(this.capacity)];
     }
 
-    public BooleanPacker(boolean[] booleans) {
+    public BooleanPacker(boolean... booleans) {
         this.capacity = booleans.length;
         this.storage = new long[this.setStorageLength(this.capacity)];
         this.fillBooleans(booleans);
@@ -29,21 +27,17 @@ public class BooleanPacker {
 
     public boolean getIndex(int index) {
         this.verifyRange(index);
-        return ((this.storage[index / 64]>>(index % 64)) & 1) != 0;
+        return ((this.storage[index >> 6] >> (index % 64)) & 1) != 0;
     }
 
     public void setIndex(int index, boolean state) {
         this.verifyRange(index);
-        if (this.getIndex(index) && !state) {
-            this.storage[index / 64] &= ~ 1 << index % 64;
-        } else if (!this.getIndex(index) && state){
-            this.storage[index / 64] |= 1 << index % 64;
-        }
+        this.storage[index >> 6] = this.storage[index >> 6] & ~(1L << (index &= 63)) | (state ? 1L : 0L) << index;
     }
 
     public void flipIndex(int index) {
         this.verifyRange(index);
-        this.storage[index / 64] ^= 1 << index % 64;
+        this.storage[index >> 6] ^= 1 << index % 64;
     }
 
     public void fillBooleans(boolean[] booleans) {
@@ -60,7 +54,7 @@ public class BooleanPacker {
     }
 
     private int setStorageLength(int capacity) {
-        return capacity / 64 + capacity % 64 != 0 ? 1 : 0;
+        return (((capacity - 1) >>> 6) + 1) & ((1 << 26) - 1);
     }
 
     private void verifyRange(int index) {
