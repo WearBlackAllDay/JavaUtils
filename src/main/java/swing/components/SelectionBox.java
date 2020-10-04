@@ -1,4 +1,4 @@
-package swing.content;
+package swing.components;
 
 import javax.swing.*;
 import java.util.Arrays;

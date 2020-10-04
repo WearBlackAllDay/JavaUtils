@@ -1,9 +1,7 @@
-package swing.content;
+package swing.components;
 
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.function.Supplier;
 
 public class GridPanel<C extends Component> extends JPanel {
