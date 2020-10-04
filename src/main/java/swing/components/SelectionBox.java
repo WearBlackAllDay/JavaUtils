@@ -9,8 +9,8 @@ import java.util.stream.Stream;
 
 public class SelectionBox<E> extends JComboBox<String> {
 
-    public final StringMapper<E> mapper;
-    public final Object[] elements;
+    private final StringMapper<E> mapper;
+    private final Object[] elements;
 
     public SelectionBox(E... elements) {
         this(Object::toString, Arrays.asList(elements));
@@ -54,6 +54,10 @@ public class SelectionBox<E> extends JComboBox<String> {
 
     public String getSelectedString() {
         return this.mapper.map(this.getSelected());
+    }
+
+    public E[] getElements() {
+        return (E[]) this.elements;
     }
 
     public interface StringMapper<E> {
