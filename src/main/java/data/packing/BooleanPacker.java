@@ -75,6 +75,7 @@ public class BooleanPacker {
         return array;
     }
 
+    @Override
     public String toString() {
         String string = "";
         for (int i = 0; i < this.capacity; i++) {
