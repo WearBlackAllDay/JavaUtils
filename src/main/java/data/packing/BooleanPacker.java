@@ -78,9 +78,7 @@ public class BooleanPacker {
     @Override
     public String toString() {
         String string = "";
-        for (int i = 0; i < this.capacity; i++) {
-            string = string.concat(this.getIndex(i) ? "1" : "0");
-        }
+        for (int i = 0; i < this.capacity; i++) string += (this.getIndex(i) ? "1" : "0");
         return string;
     }
 

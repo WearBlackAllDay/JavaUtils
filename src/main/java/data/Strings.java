@@ -12,7 +12,7 @@ public class Strings {
     }
 
     public static String[] splitLines(String input) {
-        return input.split("[\\r\\n]+");
+        return input.replaceAll(" ", "").split("[\\r\\n]+");
     }
 
     public static int[] splitToInts(String input) {
