@@ -13,14 +13,12 @@ public class GridPanel<C extends Component> extends JPanel implements Iterable<C
 
     private final int rows, columns;
     private final C[] components;
-    private final Stream<C> stream;
 
     @SuppressWarnings("unchecked")
     public GridPanel(int xSize, int ySize, Supplier<C> componentSupplier) {
         this.rows = xSize;
         this.columns = ySize;
         this.components = (C[])new Component[this.rows * this.columns];
-        this.stream = Arrays.stream(this.components);
 
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -58,16 +56,16 @@ public class GridPanel<C extends Component> extends JPanel implements Iterable<C
 
     @Override
     public void forEach(Consumer<? super C> action) {
-        this.stream.forEach(action);
+        Arrays.stream(this.components).forEach(action);
     }
 
     @Override
     public Spliterator<C> spliterator() {
-        return this.stream.spliterator();
+        return Arrays.stream(this.components).spliterator();
     }
 
     @Override
     public Iterator<C> iterator() {
-        return this.stream.iterator();
+        return Arrays.stream(this.components).iterator();
     }
 }

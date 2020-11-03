@@ -13,12 +13,10 @@ import java.util.stream.Stream;
 public class ButtonSet<B extends AbstractButton> implements Iterable<B> {
 
     private final B[] buttons;
-    private final Stream<B> stream;
 
     @SuppressWarnings("unchecked")
     public ButtonSet(Supplier<B> buttonSupplier, String... titles) {
         this.buttons = (B[])new AbstractButton[titles.length];
-        this.stream = Arrays.stream(this.buttons);
         for (int i = 0; i < this.buttons.length; i++) {
             this.buttons[i] = buttonSupplier.get();
             this.buttons[i].setText(titles[i]);
@@ -54,16 +52,16 @@ public class ButtonSet<B extends AbstractButton> implements Iterable<B> {
 
     @Override
     public void forEach(Consumer<? super B> action) {
-        this.stream.forEach(action);
+        Arrays.stream(this.buttons).forEach(action);
     }
 
     @Override
     public Spliterator<B> spliterator() {
-        return this.stream.spliterator();
+        return Arrays.stream(this.buttons).spliterator();
     }
 
     @Override
     public Iterator<B> iterator() {
-        return this.stream.iterator();
+        return Arrays.stream(this.buttons).iterator();
     }
 }
