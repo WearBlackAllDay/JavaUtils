@@ -10,8 +10,9 @@ import java.util.stream.Stream;
 public class SelectionBox<E> extends JComboBox<String> {
 
     private final StringMapper<E> mapper;
-    private final Object[] elements;
+    private final E[] elements;
 
+    @SafeVarargs
     public SelectionBox(E... elements) {
         this(Object::toString, Arrays.asList(elements));
     }
@@ -24,6 +25,7 @@ public class SelectionBox<E> extends JComboBox<String> {
         this(Object::toString, elements);
     }
 
+    @SafeVarargs
     public SelectionBox(StringMapper<E> mapper, E... elements) {
         this(mapper, Arrays.asList(elements));
     }
@@ -32,11 +34,12 @@ public class SelectionBox<E> extends JComboBox<String> {
         this(mapper, elements.collect(Collectors.toList()));
     }
 
+    @SuppressWarnings("unchecked")
     public SelectionBox(StringMapper<E> mapper, Collection<E> elements) {
         super(elements.stream().map(mapper::map).toArray(String[]::new));
 
         this.mapper = mapper;
-        this.elements = new Object[elements.size()];
+        this.elements = (E[])new Object[elements.size()];
         int i = 0;
 
         for(Iterator<E> iterator = elements.iterator(); iterator.hasNext(); i++) {
@@ -45,7 +48,7 @@ public class SelectionBox<E> extends JComboBox<String> {
     }
 
     public E getElement(int index) {
-        return (E)this.elements[index];
+        return this.elements[index];
     }
 
     public E getSelected() {
@@ -57,10 +60,15 @@ public class SelectionBox<E> extends JComboBox<String> {
     }
 
     public E[] getElements() {
-        return (E[]) this.elements;
+        return this.elements;
     }
 
-    public interface StringMapper<E> {
+    public String[] getStrings() {
+        return Arrays.stream(this.elements).map(this.mapper::map).toArray(String[]::new);
+    }
+
+    @FunctionalInterface
+    private interface StringMapper<E> {
         String map(E element);
     }
 }

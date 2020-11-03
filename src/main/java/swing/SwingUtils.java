@@ -7,7 +7,6 @@ import java.awt.event.FocusEvent;
 public class SwingUtils {
 
     public static void setPrompt(String text, JTextComponent jTextComponent) {
-
         jTextComponent.setText(text);
         jTextComponent.addFocusListener(new FocusAdapter() {
 
