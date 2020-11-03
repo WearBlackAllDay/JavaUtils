@@ -68,7 +68,7 @@ public class SelectionBox<E> extends JComboBox<String> {
     }
 
     @FunctionalInterface
-    private interface StringMapper<E> {
+    public interface StringMapper<E> {
         String map(E element);
     }
 }
