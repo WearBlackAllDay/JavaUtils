@@ -19,7 +19,7 @@ public class Strings {
     }
 
     public static int[] splitToInts(String input) {
-        return Arrays.stream(splitLines(input)).mapToInt(Integer::parseInt).toArray();
+        return Arrays.stream(Strings.splitLines(input)).mapToInt(Integer::parseInt).toArray();
     }
 
     public static int[] splitToInts(String input, String regex) {
@@ -27,7 +27,7 @@ public class Strings {
     }
 
     public static long[] splitToLongs(String input) {
-        return Arrays.stream(splitLines(input)).mapToLong(Long::parseLong).toArray();
+        return Arrays.stream(Strings.splitLines(input)).mapToLong(Long::parseLong).toArray();
     }
 
     public static long[] splitToLongs(String input, String regex) {
@@ -43,7 +43,7 @@ public class Strings {
     }
 
     public static int countLines(String input) {
-        return splitLines(input).length;
+        return Strings.splitLines(input).length;
     }
 
     public static String getFirst(String input, int chars) {
@@ -51,7 +51,7 @@ public class Strings {
     }
 
     public static String chopFirst(String input, int chars) {
-        return input.replaceFirst(getFirst(input, chars), "");
+        return input.replaceFirst(Strings.getFirst(input, chars), "");
     }
 
     public static <T> void splitAndRun(String text, String regex, Function<String, T> mapper, Consumer<T> action) {
@@ -61,7 +61,7 @@ public class Strings {
     }
 
     public static <T, C extends Collection<T>> C splitAndAdd(String text, String regex, Function<String, T> mapper, C collection) {
-        splitAndRun(text, regex, mapper, collection::add);
+        Strings.splitAndRun(text, regex, mapper, collection::add);
         return collection;
     }
 }

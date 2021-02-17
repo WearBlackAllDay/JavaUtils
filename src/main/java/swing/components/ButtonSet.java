@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 public class ButtonSet<B extends AbstractButton> implements Iterable<B> {
 
@@ -42,12 +41,12 @@ public class ButtonSet<B extends AbstractButton> implements Iterable<B> {
         this.forEach(abstractButton -> abstractButton.addActionListener(iterator.next()));
     }
 
-    public B getButton(int index) {
-        return this.buttons[index];
+    public int buttonCount() {
+        return this.buttons.length;
     }
 
-    public B[] getButtons() {
-        return this.buttons;
+    public B getButton(int index) {
+        return this.buttons[index];
     }
 
     @Override

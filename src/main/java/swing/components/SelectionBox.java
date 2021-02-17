@@ -7,12 +7,12 @@ import java.util.Iterator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@SuppressWarnings("unchecked")
 public class SelectionBox<E> extends JComboBox<String> {
 
     private final StringMapper<E> mapper;
     private final E[] elements;
 
-    @SafeVarargs
     public SelectionBox(E... elements) {
         this(Object::toString, Arrays.asList(elements));
     }
@@ -25,7 +25,6 @@ public class SelectionBox<E> extends JComboBox<String> {
         this(Object::toString, elements);
     }
 
-    @SafeVarargs
     public SelectionBox(StringMapper<E> mapper, E... elements) {
         this(mapper, Arrays.asList(elements));
     }
@@ -34,7 +33,6 @@ public class SelectionBox<E> extends JComboBox<String> {
         this(mapper, elements.collect(Collectors.toList()));
     }
 
-    @SuppressWarnings("unchecked")
     public SelectionBox(StringMapper<E> mapper, Collection<E> elements) {
         super(elements.stream().map(mapper::map).toArray(String[]::new));
 
@@ -57,10 +55,6 @@ public class SelectionBox<E> extends JComboBox<String> {
 
     public String getSelectedString() {
         return this.mapper.map(this.getSelected());
-    }
-
-    public E[] getElements() {
-        return this.elements;
     }
 
     public String[] getStrings() {
