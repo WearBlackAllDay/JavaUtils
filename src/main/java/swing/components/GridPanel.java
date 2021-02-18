@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class GridPanel<C extends Component> extends JPanel implements Iterable<C> {
@@ -53,6 +54,20 @@ public class GridPanel<C extends Component> extends JPanel implements Iterable<C
 
     private boolean inBounds(int row, int column) {
         return row >= 0 && row < this.rows && column >= 0 && column < this.columns;
+    }
+
+    public boolean anyMatch(Predicate<C> predicate) {
+        for (C c : this) {
+            if (predicate.test(c)) return true;
+        }
+        return false;
+    }
+
+    public boolean allMatch(Predicate<C> predicate) {
+        for (C c : this) {
+            if (!predicate.test(c)) return false;
+        }
+        return true;
     }
 
     public C getComponent(int index) {

@@ -1,6 +1,7 @@
 package swing;
 
 import javax.swing.text.JTextComponent;
+import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
@@ -20,5 +21,11 @@ public class SwingUtils {
                 if (jTextComponent.getText().isEmpty()) jTextComponent.setText(text);
             }
         });
+    }
+
+    public static void addSet(Container container, Component... components) {
+        for (Component c : components) {
+            container.add(c);
+        }
     }
 }
