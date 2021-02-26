@@ -70,6 +70,13 @@ public class GridPanel<C extends Component> extends JPanel implements Iterable<C
         return true;
     }
 
+    public boolean noneMatch(Predicate<C> predicate) {
+        for (C c : this) {
+            if (predicate.test(c)) return false;
+        }
+        return true;
+    }
+
     public C getComponent(int index) {
         return this.components[index];
     }

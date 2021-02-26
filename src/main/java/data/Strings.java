@@ -54,6 +54,57 @@ public class Strings {
         return input.replaceFirst(Strings.getFirst(input, chars), "");
     }
 
+    public static String formatJSON(String uglyJSON) {
+        return Strings.formatJSON(uglyJSON, 1);
+    }
+
+    public static String formatJSON(String uglyJSON, int indent) {
+        StringBuilder prettyJSONBuilder = new StringBuilder();
+        int indentLevel = indent;
+        boolean inQuote = false;
+        for(char charFromUglyJSON : uglyJSON.toCharArray()) {
+            switch(charFromUglyJSON) {
+                case '"':
+                    inQuote = !inQuote;
+                    prettyJSONBuilder.append(charFromUglyJSON);
+                    break;
+                case ' ':
+                    if(inQuote) {
+                        prettyJSONBuilder.append(charFromUglyJSON);
+                    }
+                    break;
+                case '{':
+                case '[':
+                    prettyJSONBuilder.append(charFromUglyJSON);
+                    indentLevel++;
+                    Strings.indentedNewLine(indentLevel, prettyJSONBuilder);
+                    break;
+                case '}':
+                case ']':
+                    indentLevel--;
+                    Strings.indentedNewLine(indentLevel, prettyJSONBuilder);
+                    prettyJSONBuilder.append(charFromUglyJSON);
+                    break;
+                case ',':
+                    prettyJSONBuilder.append(charFromUglyJSON);
+                    if(!inQuote) {
+                        Strings.indentedNewLine(indentLevel, prettyJSONBuilder);
+                    }
+                    break;
+                default:
+                    prettyJSONBuilder.append(charFromUglyJSON);
+            }
+        }
+        return prettyJSONBuilder.toString();
+    }
+
+    private static void indentedNewLine(int indentLevel, StringBuilder stringBuilder) {
+        stringBuilder.append("\n");
+        for(int i = 0; i < indentLevel; i++) {
+            stringBuilder.append(" ");
+        }
+    }
+
     public static <T> void splitAndRun(String text, String regex, Function<String, T> mapper, Consumer<T> action) {
         for(String s: text.split(regex)) {
             action.accept(mapper.apply(s));

@@ -34,6 +34,7 @@ public class CustomPanel extends JPanel {
         JButton jButton = new JButton(text);
         jButton.setPreferredSize(new Dimension(width, height));
         jButton.addActionListener(actionListener);
+        this.add(jButton);
         return this;
     }
 
