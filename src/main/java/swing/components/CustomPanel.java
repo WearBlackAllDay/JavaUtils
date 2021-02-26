@@ -30,6 +30,10 @@ public class CustomPanel extends JPanel {
         return this.textFields.get(id).getText();
     }
 
+    public JTextField getTextField(String id) {
+        return this.textFields.get(id);
+    }
+
     public CustomPanel addButton(String text, int width, int height, ActionListener actionListener) {
         JButton jButton = new JButton(text);
         jButton.setPreferredSize(new Dimension(width, height));
