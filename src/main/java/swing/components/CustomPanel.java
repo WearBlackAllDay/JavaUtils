@@ -12,9 +12,25 @@ import java.util.function.Supplier;
 public class CustomPanel extends JPanel {
 
     private final Map<String, JTextField> textFields = new HashMap<>();
+    private final Map<Key<?>, Component> components = new HashMap<>();
+    private final int defaultWidth, defaultHeight;
+
+    public CustomPanel(LayoutManager layoutManager, int defaultWidth, int defaultHeight) {
+        this.setLayout(layoutManager);
+        this.defaultWidth = defaultWidth;
+        this.defaultHeight = defaultHeight;
+    }
 
     public CustomPanel(LayoutManager layoutManager) {
-        this.setLayout(layoutManager);
+        this(layoutManager, 0, 0);
+    }
+
+    public CustomPanel(int defaultWidth, int defaultHeight) {
+        this(new FlowLayout(), defaultWidth, defaultHeight);
+    }
+
+    public CustomPanel() {
+        this(new FlowLayout());
     }
 
     public CustomPanel addTextField(String text, int width, int height, String id) {
@@ -24,6 +40,10 @@ public class CustomPanel extends JPanel {
         this.add(jTextField);
         this.textFields.put(id, jTextField);
         return this;
+    }
+
+    public CustomPanel addTextField(String text, String id) {
+        return this.addTextField(text, this.defaultWidth, this.defaultHeight, id);
     }
 
     public String getText(String id) {
@@ -42,8 +62,21 @@ public class CustomPanel extends JPanel {
         return this;
     }
 
-    public <C extends Component> CustomPanel addComponent(Supplier<C> cSupplier) {
-        this.add(cSupplier.get());
+    public CustomPanel addButton(String text, ActionListener actionListener) {
+        return this.addButton(text, this.defaultWidth, this.defaultHeight, actionListener);
+    }
+
+    public <C extends Component> CustomPanel addComponent(Key<C> key, Supplier<C> cSupplier) {
+        this.components.put(key, cSupplier.get());
+        this.add(this.getComponent(key));
         return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <C extends Component> C getComponent(Key<C> key) {
+        return (C)this.components.get(key);
+    }
+
+    public static class Key<C> {
     }
 }
