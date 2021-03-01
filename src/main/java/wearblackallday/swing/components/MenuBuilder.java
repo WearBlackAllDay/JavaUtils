@@ -3,9 +3,11 @@ package swing.components;
 import swing.SwingUtils;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -49,9 +51,9 @@ public class MenuBuilder extends JMenuBar {
     }
 
     public static class CheckBox extends JCheckBoxMenuItem {
-        public CheckBox(String title, ActionListener actionListener) {
+        public CheckBox(String title, BiConsumer<CheckBox, ActionEvent> actionListener) {
             this.setText(title);
-            this.addActionListener(actionListener);
+            this.addActionListener(e -> actionListener.accept(this, e));
         }
 
         public CheckBox addIcon(Icon icon) {
@@ -66,9 +68,9 @@ public class MenuBuilder extends JMenuBar {
     }
 
     public static class RadioBox extends JRadioButtonMenuItem {
-        public RadioBox(String title, ActionListener actionListener) {
+        public RadioBox(String title, BiConsumer<RadioBox, ActionEvent> actionListener) {
             this.setText(title);
-            this.addActionListener(actionListener);
+            this.addActionListener(e -> actionListener.accept(this, e));
         }
 
         public RadioBox addIcon(Icon icon) {
@@ -87,6 +89,16 @@ public class MenuBuilder extends JMenuBar {
         public Menu(String title, JMenuItem... items) {
             this.setText(title);
             SwingUtils.addSet(this, items);
+        }
+
+        public Menu addIcon(Icon icon) {
+            this.setIcon(icon);
+            return this;
+        }
+
+        public Menu run(Consumer<JMenuItem> consumer) {
+            consumer.accept(this);
+            return this;
         }
     }
 

@@ -1,4 +1,4 @@
-package swing;
+package wearblackallday.swing;
 
 import javax.swing.text.JTextComponent;
 import java.awt.*;

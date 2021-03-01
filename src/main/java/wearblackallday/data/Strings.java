@@ -1,4 +1,4 @@
-package data;
+package wearblackallday.data;
 
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
