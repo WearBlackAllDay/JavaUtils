@@ -1,4 +1,4 @@
-package swing.components;
+package wearblackallday.swing.components;
 
 import javax.swing.*;
 import java.util.Arrays;

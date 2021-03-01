@@ -1,10 +1,10 @@
-package swing.components;
+package wearblackallday.swing.components;
 
-import swing.SwingUtils;
+import wearblackallday.swing.SwingUtils;
 
 import javax.swing.*;
+import javax.swing.event.MenuListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -14,6 +14,10 @@ import java.util.function.Supplier;
 public class MenuBuilder extends JMenuBar {
 
     private final Map<Key<?>, JMenuItem> items = new HashMap<>();
+
+    public MenuBuilder(Menu... menus) {
+        SwingUtils.addSet(this, menus);
+    }
 
     public MenuBuilder addTab(String title, JMenuItem... items) {
         JMenu jMenu = new JMenu(title);
@@ -34,9 +38,9 @@ public class MenuBuilder extends JMenuBar {
     }
 
     public static class Item extends JMenuItem {
-        public Item(String title, ActionListener actionListener) {
+        public Item(String title, BiConsumer<Item, ActionEvent> actionListener) {
             this.setText(title);
-            this.addActionListener(actionListener);
+            this.addActionListener(e -> actionListener.accept(this, e));
         }
 
         public Item addIcon(Icon icon) {
@@ -83,8 +87,7 @@ public class MenuBuilder extends JMenuBar {
             return this;
         }
     }
-
-
+    
     public static class Menu extends JMenu {
         public Menu(String title, JMenuItem... items) {
             this.setText(title);
@@ -93,6 +96,11 @@ public class MenuBuilder extends JMenuBar {
 
         public Menu addIcon(Icon icon) {
             this.setIcon(icon);
+            return this;
+        }
+
+        public Menu addListener(MenuListener actionListener) {
+            this.addMenuListener(actionListener);
             return this;
         }
 

@@ -1,4 +1,4 @@
-package data.packing;
+package wearblackallday.data.packing;
 
 public class BooleanPacker {
     private final int capacity;

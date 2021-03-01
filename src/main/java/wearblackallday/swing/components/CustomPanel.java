@@ -1,6 +1,6 @@
-package swing.components;
+package wearblackallday.swing.components;
 
-import swing.SwingUtils;
+import wearblackallday.swing.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
