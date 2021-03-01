@@ -3,6 +3,7 @@ package wearblackallday.swing.components;
 import wearblackallday.swing.SwingUtils;
 
 import javax.swing.*;
+import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
@@ -17,13 +18,6 @@ public class MenuBuilder extends JMenuBar {
 
     public MenuBuilder(Menu... menus) {
         SwingUtils.addSet(this, menus);
-    }
-
-    public MenuBuilder addTab(String title, JMenuItem... items) {
-        JMenu jMenu = new JMenu(title);
-        SwingUtils.addSet(jMenu, items);
-        this.add(jMenu);
-        return this;
     }
 
     @SuppressWarnings("unchecked")
@@ -87,7 +81,7 @@ public class MenuBuilder extends JMenuBar {
             return this;
         }
     }
-    
+
     public static class Menu extends JMenu {
         public Menu(String title, JMenuItem... items) {
             this.setText(title);
@@ -99,8 +93,21 @@ public class MenuBuilder extends JMenuBar {
             return this;
         }
 
-        public Menu addListener(MenuListener actionListener) {
-            this.addMenuListener(actionListener);
+        public Menu addSelectedListener(BiConsumer<MenuListener, MenuEvent> actionListener) {
+            this.addMenuListener(new MenuListener() {
+                @Override
+                public void menuSelected(MenuEvent e) {
+                    actionListener.accept(this, e);
+                }
+
+                @Override
+                public void menuDeselected(MenuEvent e) {
+                }
+
+                @Override
+                public void menuCanceled(MenuEvent e) {
+                }
+            });
             return this;
         }
 
