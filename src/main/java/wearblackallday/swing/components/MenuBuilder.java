@@ -93,11 +93,11 @@ public class MenuBuilder extends JMenuBar {
             return this;
         }
 
-        public Menu addSelectedListener(BiConsumer<MenuListener, MenuEvent> actionListener) {
+        public Menu addSelectedListener(BiConsumer<Menu, MenuEvent> actionListener) {
             this.addMenuListener(new MenuListener() {
                 @Override
                 public void menuSelected(MenuEvent e) {
-                    actionListener.accept(this, e);
+                    actionListener.accept(Menu.this, e);
                 }
 
                 @Override
