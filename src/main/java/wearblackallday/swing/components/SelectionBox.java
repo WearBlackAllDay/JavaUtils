@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -59,6 +60,20 @@ public class SelectionBox<E> extends JComboBox<String> {
 
     public String[] getStrings() {
         return Arrays.stream(this.elements).map(this.mapper::map).toArray(String[]::new);
+    }
+
+    public boolean selectIfContains(E element) {
+        return this.selectIfContains(element, Object::equals);
+    }
+
+    public boolean selectIfContains(E element, BiPredicate<E, E> equals) {
+        for(int i = 0; i < this.elements.length; i++) {
+            if(equals.test(this.getElement(i), element)) {
+                this.setSelectedIndex(i);
+                return true;
+            }
+        }
+        return false;
     }
 
     @FunctionalInterface

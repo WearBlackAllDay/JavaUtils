@@ -9,6 +9,7 @@ public class SwingUtils {
 
     public static void setPrompt(String text, JTextComponent jTextComponent) {
         jTextComponent.setText(text);
+        jTextComponent.setToolTipText(text);
         jTextComponent.addFocusListener(new FocusAdapter() {
 
             @Override

@@ -4,9 +4,11 @@ import wearblackallday.swing.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 public class CustomPanel extends JPanel {
@@ -69,6 +71,11 @@ public class CustomPanel extends JPanel {
     public <C extends Component> CustomPanel addComponent(Key<C> key, Supplier<C> cSupplier) {
         this.components.put(key, cSupplier.get());
         this.add(this.getComponent(key));
+        return this;
+    }
+
+    public <C extends Component> CustomPanel addComponent(Supplier<C> cSupplier) {
+        this.add(cSupplier.get());
         return this;
     }
 
