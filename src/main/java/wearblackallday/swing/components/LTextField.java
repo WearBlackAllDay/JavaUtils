@@ -3,6 +3,8 @@ package wearblackallday.swing.components;
 import javax.swing.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -12,8 +14,8 @@ public class LTextField<T> extends JTextField {
 	protected Function<T, String> mapper;
 	protected Function<String, T> parser;
 	protected Predicate<String> validator;
-	protected Predicate<String> limiter;
 
+	protected String textCache = null;
 	protected T valueCache = null;
 	protected Boolean validCache = null;
 
@@ -39,20 +41,6 @@ public class LTextField<T> extends JTextField {
 
 	public Predicate<String> getValidator() {
 		return this.validator;
-	}
-
-	public Predicate<String> getLimiter() {
-		return this.limiter;
-	}
-
-	public LTextField<T> enforceValidator() {
-		if(this.getLimiter() == null) {
-			this.setLimiter(this.getValidator());
-		} else {
-			this.setLimiter(this.getLimiter().and(this.getValidator()));
-		}
-
-		return this;
 	}
 
 	public boolean hasValidValue() {
@@ -86,18 +74,10 @@ public class LTextField<T> extends JTextField {
 		return this;
 	}
 
-	public LTextField<T> setLimiter(Predicate<String> limiter) {
-		this.limiter = limiter;
-		return this;
-	}
-
 	@Override
 	public void setText(String t) {
-		if(this.getLimiter() != null && !this.getLimiter().test(t)) {
-			return;
-		}
-
 		super.setText(t);
+		this.textCache = t;
 		this.valueCache = null;
 		this.validCache = null;
 	}
@@ -259,4 +239,63 @@ public class LTextField<T> extends JTextField {
 		});
 	}
 
+	//========================================================================================================//
+
+	public static LTextField<BigDecimal> ofBigDecimal() {
+		return ofBigDecimal((String)null);
+	}
+
+	public static LTextField<BigDecimal> ofBigDecimal(long value) {
+		return ofBigDecimal(BigDecimal.valueOf(value));
+	}
+
+	public static LTextField<BigDecimal> ofBigDecimal(double value) {
+		return ofBigDecimal(BigDecimal.valueOf(value));
+	}
+
+	public static LTextField<BigDecimal> ofBigDecimal(BigDecimal value) {
+		return ofBigDecimal(value.toPlainString());
+	}
+
+	public static LTextField<BigDecimal> ofBigDecimal(String text) {
+		return new LTextField<>(text, String::valueOf, s -> new BigDecimal(s.trim())).setValidator(s -> {
+			try { new BigDecimal(s.trim()); return true; }
+			catch(NumberFormatException e) { return false; }
+		});
+	}
+
+	//========================================================================================================//
+
+	public static LTextField<BigInteger> ofBigInteger() {
+		return ofBigInteger((String)null, 10);
+	}
+
+	public static LTextField<BigInteger> ofBigInteger(long value) {
+		return ofBigInteger(BigInteger.valueOf(value));
+	}
+
+
+	public static LTextField<BigInteger> ofBigInteger(long value, int radix) {
+		return ofBigInteger(BigInteger.valueOf(value), radix);
+	}
+
+	public static LTextField<BigInteger> ofBigInteger(BigInteger value) {
+		return ofBigInteger(value.toString());
+	}
+
+	public static LTextField<BigInteger> ofBigInteger(BigInteger value, int radix) {
+		return ofBigInteger(value.toString(radix), radix);
+	}
+
+	public static LTextField<BigInteger> ofBigInteger(String text) {
+		return ofBigInteger(text, 10);
+	}
+
+	public static LTextField<BigInteger> ofBigInteger(String text, int radix) {
+		return new LTextField<>(text, String::valueOf, s -> new BigInteger(s.trim(), radix)).setValidator(s -> {
+			try { new BigInteger(s.trim(), radix); return true; }
+			catch(NumberFormatException e) { return false; }
+		});
+	}
+	
 }
