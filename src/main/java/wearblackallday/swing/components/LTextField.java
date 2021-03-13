@@ -17,6 +17,7 @@ public class LTextField<T> extends JTextField {
 
 	protected T valueCache = null;
 	protected Boolean validCache = null;
+	protected boolean alwaysDirty = false;
 
 	protected LTextField(Function<T, String> mapper, Function<String, T> parser) {
 		super();
@@ -55,11 +56,15 @@ public class LTextField<T> extends JTextField {
 	}
 
 	public T getValue() {
-		if(this.getValidator() != null) {
-			return this.hasValidValue() ? this.valueCache = this.getParser().apply(this.getText()) : null;
+		if(this.valueCache == null || this.alwaysDirty) {
+			if(this.getValidator() != null) {
+				return this.hasValidValue() ? this.valueCache = this.getParser().apply(this.getText()) : null;
+			}
+
+			return this.getParser().apply(this.getText());
 		}
 
-		return this.valueCache = this.parser.apply(this.getText());
+		return this.valueCache;
 	}
 
 	public LTextField<T> setValue(T value) {
@@ -70,6 +75,11 @@ public class LTextField<T> extends JTextField {
 
 	public LTextField<T> setValidator(Predicate<String> validator) {
 		this.validator = validator;
+		return this;
+	}
+
+	public LTextField<T> setAlwaysDirty() {
+		this.alwaysDirty = true;
 		return this;
 	}
 
