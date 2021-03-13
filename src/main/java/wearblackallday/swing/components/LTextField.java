@@ -15,7 +15,6 @@ public class LTextField<T> extends JTextField {
 	protected Function<String, T> parser;
 	protected Predicate<String> validator;
 
-	protected String textCache = null;
 	protected T valueCache = null;
 	protected Boolean validCache = null;
 
@@ -77,7 +76,6 @@ public class LTextField<T> extends JTextField {
 	@Override
 	public void setText(String t) {
 		super.setText(t);
-		this.textCache = t;
 		this.valueCache = null;
 		this.validCache = null;
 	}
@@ -111,16 +109,6 @@ public class LTextField<T> extends JTextField {
 
 	//========================================================================================================//
 
-	public static LTextField<String> empty() {
-		return new LTextField<>(s -> s, s -> s);
-	}
-
-	public static LTextField<String> ofString(String text) {
-		return new LTextField<>(s -> s, s -> s).setValue(text);
-	}
-
-	//========================================================================================================//
-
 	public static <T> LTextField<T> of(Function<String, T> parser) {
 		return new LTextField<>(Objects::toString, parser);
 	}
@@ -139,6 +127,16 @@ public class LTextField<T> extends JTextField {
 
 	//========================================================================================================//
 
+	public static LTextField<String> empty() {
+		return new LTextField<>(s -> s, s -> s);
+	}
+
+	public static LTextField<String> ofString(String text) {
+		return new LTextField<>(s -> s, s -> s).setValue(text);
+	}
+
+	//========================================================================================================//
+
 	public static <T> LTextField<T> ofText(String text, Function<String, T> parser) {
 		return new LTextField<>(text, Objects::toString, parser);
 	}
@@ -153,6 +151,57 @@ public class LTextField<T> extends JTextField {
 
 	public static <T> LTextField<T> ofText(String text, T value, Function<T, String> mapper, Function<String, T> parser) {
 		return new LTextField<>(text, mapper, parser).setValue(value);
+	}
+
+	//========================================================================================================//
+
+	public static LTextField<Byte> ofByte() {
+		return ofByte(null);
+	}
+
+	public static LTextField<Byte> ofByte(byte value) {
+		return ofByte(Byte.toString(value));
+	}
+
+	public static LTextField<Byte> ofByte(byte value, int radix) {
+		return ofByte(Integer.toString(value, radix));
+	}
+
+	public static LTextField<Byte> ofByte(String text) {
+		return ofByte(text, 10);
+	}
+
+	public static LTextField<Byte> ofByte(String text, int radix) {
+		return new LTextField<>(text, String::valueOf, s -> Byte.parseByte(s.trim(), radix)).setValidator(s -> {
+			try { Byte.parseByte(s.trim(), radix); return true; }
+			catch(NumberFormatException e) { return false; }
+		});
+	}
+
+
+	//========================================================================================================//
+
+	public static LTextField<Short> ofShort() {
+		return ofShort(null);
+	}
+
+	public static LTextField<Short> ofShort(short value) {
+		return ofShort(Short.toString(value));
+	}
+
+	public static LTextField<Short> ofShort(short value, int radix) {
+		return ofShort(Integer.toString(value, radix));
+	}
+
+	public static LTextField<Short> ofShort(String text) {
+		return ofShort(text, 10);
+	}
+
+	public static LTextField<Short> ofShort(String text, int radix) {
+		return new LTextField<>(text, String::valueOf, s -> Short.parseShort(s.trim(), radix)).setValidator(s -> {
+			try { Short.parseShort(s.trim(), radix); return true; }
+			catch(NumberFormatException e) { return false; }
+		});
 	}
 
 	//========================================================================================================//
@@ -297,5 +346,5 @@ public class LTextField<T> extends JTextField {
 			catch(NumberFormatException e) { return false; }
 		});
 	}
-	
+
 }
