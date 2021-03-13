@@ -61,7 +61,7 @@ public class LTextField<T> extends JTextField {
 				return this.hasValidValue() ? this.valueCache = this.getParser().apply(this.getText()) : null;
 			}
 
-			return this.getParser().apply(this.getText());
+			return this.valueCache = this.getParser().apply(this.getText());
 		}
 
 		return this.valueCache;
