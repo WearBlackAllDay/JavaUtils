@@ -91,7 +91,9 @@ public class LTextField<T> extends JTextField {
 	}
 
 	public LTextField<T> setPrompt(String prompt) {
-		this.setText(prompt);
+		if(LTextField.this.getText().isEmpty()) {
+			this.setText(prompt);
+		}
 
 		this.addFocusListener(new FocusAdapter() {
 			@Override
