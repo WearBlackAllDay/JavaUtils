@@ -307,7 +307,7 @@ public class LTextField<T> extends JTextField {
 	}
 
 	public static LTextField<BigDecimal> ofBigDecimal(String text) {
-		return new LTextField<>(text, String::valueOf, s -> new BigDecimal(s.trim())).setValidator(s -> {
+		return new LTextField<>(text, BigDecimal::toPlainString, s -> new BigDecimal(s.trim())).setValidator(s -> {
 			try { new BigDecimal(s.trim()); return true; }
 			catch(NumberFormatException e) { return false; }
 		});
@@ -341,7 +341,7 @@ public class LTextField<T> extends JTextField {
 	}
 
 	public static LTextField<BigInteger> ofBigInteger(String text, int radix) {
-		return new LTextField<>(text, String::valueOf, s -> new BigInteger(s.trim(), radix)).setValidator(s -> {
+		return new LTextField<>(text, value -> value.toString(radix), s -> new BigInteger(s.trim(), radix)).setValidator(s -> {
 			try { new BigInteger(s.trim(), radix); return true; }
 			catch(NumberFormatException e) { return false; }
 		});
