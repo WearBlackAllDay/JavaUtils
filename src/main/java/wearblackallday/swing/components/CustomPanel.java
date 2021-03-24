@@ -5,7 +5,6 @@ import wearblackallday.swing.SwingUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -56,15 +55,15 @@ public class CustomPanel extends JPanel {
         return this.textFields.get(id);
     }
 
-    public CustomPanel addButton(String text, int width, int height, ActionListener actionListener) {
+    public CustomPanel addButton(String text, int width, int height, BiConsumer<JButton, ActionEvent> actionListener) {
         JButton jButton = new JButton(text);
         jButton.setPreferredSize(new Dimension(width, height));
-        jButton.addActionListener(actionListener);
+        jButton.addActionListener(e -> actionListener.accept(jButton, e));
         this.add(jButton);
         return this;
     }
 
-    public CustomPanel addButton(String text, ActionListener actionListener) {
+    public CustomPanel addButton(String text, BiConsumer<JButton, ActionEvent> actionListener) {
         return this.addButton(text, this.defaultWidth, this.defaultHeight, actionListener);
     }
 
