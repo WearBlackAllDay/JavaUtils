@@ -29,3 +29,5 @@ build/
 /src/test/
 
 build.gradle
+
+src/META-INF/

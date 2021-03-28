@@ -70,6 +70,9 @@ public class CustomPanel extends JPanel {
         return this.addButton(text, this.defaultWidth, this.defaultHeight, actionListener);
     }
 
+    public CustomPanel addComponent(Component component) {
+        return this.addComponent(() -> component);
+    }
 
     public <C extends Component> CustomPanel addComponent(Supplier<C> cSupplier) {
         this.add(cSupplier.get());
