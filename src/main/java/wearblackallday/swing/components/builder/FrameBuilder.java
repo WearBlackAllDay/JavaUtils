@@ -1,4 +1,4 @@
-package wearblackallday.swing.components;
+package wearblackallday.swing.components.builder;
 
 import javax.swing.*;
 import java.awt.Container;
@@ -55,6 +55,11 @@ public class FrameBuilder {
 
     public FrameBuilder contentPane(Container contentPane) {
         this.contentPane = contentPane;
+        return this;
+    }
+
+    public FrameBuilder menu(JMenuBar jMenuBar) {
+        this.menu = jMenuBar;
         return this;
     }
 
