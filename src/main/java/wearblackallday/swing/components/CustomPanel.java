@@ -37,6 +37,12 @@ public class CustomPanel extends JPanel {
         this(new FlowLayout());
     }
 
+
+    public CustomPanel boxLayout(int axis) {
+        this.setLayout(new BoxLayout(this, axis));
+        return this;
+    }
+
     public CustomPanel addTextField(String text, int width, int height, String id) {
         JTextField jTextField = new JTextField(text);
         SwingUtils.setPrompt(text, jTextField);
