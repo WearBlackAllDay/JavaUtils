@@ -4,10 +4,7 @@ import javax.swing.*;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -35,12 +32,12 @@ public class GridPanel<C extends Component> extends JPanel implements Iterable<C
 		}
 	}
 
-	public ArrayList<C> getNeighbors(int index) {
+	public List<C> getNeighbors(int index) {
 		return this.getNeighbors(index / this.rows, index % this.columns);
 	}
 
-	public ArrayList<C> getNeighbors(int row, int column) {
-		ArrayList<C> neighbors = new ArrayList<>(8);
+	public List<C> getNeighbors(int row, int column) {
+		List<C> neighbors = new ArrayList<>(8);
 		if(this.inBounds(row, column)) {
 			if(this.inBounds(row + 1, column)) neighbors.add(this.getComponent(row + 1, column));
 			if(this.inBounds(row - 1, column)) neighbors.add(this.getComponent(row - 1, column));
@@ -93,6 +90,10 @@ public class GridPanel<C extends Component> extends JPanel implements Iterable<C
 
 	public int getColumns() {
 		return this.columns;
+	}
+
+	public int getCount() {
+		return this.rows * this.columns;
 	}
 
 	@Override

@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class StringUtils {
+public class Strings {
 	private static final Random RANDOM = new Random();
 
 	public static void clipboard(String input) {
@@ -45,7 +45,7 @@ public class StringUtils {
 	}
 
 	public static int countLines(String input) {
-		return StringUtils.splitLines(input).length;
+		return Strings.splitLines(input).length;
 	}
 
 	public static String getFirst(String input, int chars) {
@@ -53,7 +53,7 @@ public class StringUtils {
 	}
 
 	public static String chopFirst(String input, int chars) {
-		return input.replaceFirst(StringUtils.getFirst(input, chars), "");
+		return input.replaceFirst(Strings.getFirst(input, chars), "");
 	}
 
 	public static String randomAlphabetic(int length) {
@@ -72,7 +72,7 @@ public class StringUtils {
 	}
 
 	public static String formatJSON(String uglyJSON) {
-		return StringUtils.formatJSON(uglyJSON, 1);
+		return Strings.formatJSON(uglyJSON, 1);
 	}
 
 	public static String formatJSON(String uglyJSON, int indent) {
@@ -94,18 +94,18 @@ public class StringUtils {
 				case '[':
 					prettyJSONBuilder.append(charFromUglyJSON);
 					indentLevel++;
-					StringUtils.indentedNewLine(indentLevel, prettyJSONBuilder);
+					Strings.indentedNewLine(indentLevel, prettyJSONBuilder);
 					break;
 				case '}':
 				case ']':
 					indentLevel--;
-					StringUtils.indentedNewLine(indentLevel, prettyJSONBuilder);
+					Strings.indentedNewLine(indentLevel, prettyJSONBuilder);
 					prettyJSONBuilder.append(charFromUglyJSON);
 					break;
 				case ',':
 					prettyJSONBuilder.append(charFromUglyJSON);
 					if(!inQuote) {
-						StringUtils.indentedNewLine(indentLevel, prettyJSONBuilder);
+						Strings.indentedNewLine(indentLevel, prettyJSONBuilder);
 					}
 					break;
 				default:

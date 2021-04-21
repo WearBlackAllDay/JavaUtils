@@ -45,7 +45,7 @@ public class CustomPanel extends JPanel {
 
 	public CustomPanel addTextField(String text, int width, int height, String id) {
 		JTextField jTextField = new JTextField(text);
-		SwingUtils.setPrompt(text, jTextField);
+		SwingUtils.setPrompt(jTextField, text);
 		jTextField.setPreferredSize(new Dimension(width, height));
 		this.add(jTextField);
 		this.textFields.put(id, jTextField);

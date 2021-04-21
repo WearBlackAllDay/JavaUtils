@@ -5,10 +5,11 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.Arrays;
 
 public class SwingUtils {
 
-	public static void setPrompt(String text, JTextComponent jTextComponent) {
+	public static void setPrompt(JTextComponent jTextComponent, String text) {
 		jTextComponent.setText(text);
 		jTextComponent.setToolTipText(text);
 		jTextComponent.addFocusListener(new FocusAdapter() {
@@ -26,8 +27,6 @@ public class SwingUtils {
 	}
 
 	public static void addSet(Container container, Component... components) {
-		for(Component c : components) {
-			container.add(c);
-		}
+		Arrays.stream(components).forEach(container::add);
 	}
 }
