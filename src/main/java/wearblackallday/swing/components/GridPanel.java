@@ -8,6 +8,7 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class GridPanel<C extends Component> extends JPanel implements Iterable<C> {
 
@@ -96,18 +97,22 @@ public class GridPanel<C extends Component> extends JPanel implements Iterable<C
 		return this.rows * this.columns;
 	}
 
+	public Stream<C> stream() {
+		return Arrays.stream(this.components);
+	}
+
 	@Override
 	public void forEach(Consumer<? super C> action) {
-		Arrays.stream(this.components).forEach(action);
+		this.stream().forEach(action);
 	}
 
 	@Override
 	public Spliterator<C> spliterator() {
-		return Arrays.stream(this.components).spliterator();
+		return this.stream().spliterator();
 	}
 
 	@Override
 	public Iterator<C> iterator() {
-		return Arrays.stream(this.components).iterator();
+		return this.stream().iterator();
 	}
 }
