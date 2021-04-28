@@ -12,48 +12,56 @@ import java.util.stream.Stream;
 
 public class GridPanel<C extends Component> extends JPanel implements Iterable<C> {
 
-	private final int rows, columns;
+	private final int gridWidth, gridHeight;
 	private final C[] components;
 
 	@SuppressWarnings("unchecked")
-	public GridPanel(int rows, int columns, Supplier<C> componentSupplier) {
-		this.rows = rows;
-		this.columns = columns;
-		this.components = (C[])new Component[this.rows * this.columns];
+	public GridPanel(int width, int height, Supplier<C> componentSupplier) {
+		this.gridWidth = width;
+		this.gridHeight = height;
+		this.components = (C[])new Component[width * height];
 
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 
-		for(int row = 0; row < rows; row++) {
-			gbc.gridy = row;
-			for(int column = 0; column < columns; column++) {
-				gbc.gridx = column;
-				this.add(this.components[column * this.rows + row] = componentSupplier.get(), gbc);
+		for(int x = 0; x < width; x++) {
+			gbc.gridx = x;
+			for(int y = 0; y < height; y++) {
+				gbc.gridy = y;
+				this.add(this.components[this.toIndex(x, y)] = componentSupplier.get(), gbc);
 			}
 		}
 	}
 
-	public List<C> getNeighbors(int index) {
-		return this.getNeighbors(index / this.rows, index % this.columns);
+	public List<C> getNeighbors(C component) {
+		return this.getNeighbors(this.indexOf(component));
 	}
 
-	public List<C> getNeighbors(int row, int column) {
+	public List<C> getNeighbors(int index) {
+		return this.getNeighbors(index % this.gridWidth, index / this.gridWidth);
+	}
+
+	public List<C> getNeighbors(int x, int y) {
 		List<C> neighbors = new ArrayList<>(8);
-		if(this.inBounds(row, column)) {
-			if(this.inBounds(row + 1, column)) neighbors.add(this.getComponent(row + 1, column));
-			if(this.inBounds(row - 1, column)) neighbors.add(this.getComponent(row - 1, column));
-			if(this.inBounds(row, column + 1)) neighbors.add(this.getComponent(row, column + 1));
-			if(this.inBounds(row, column - 1)) neighbors.add(this.getComponent(row, column - 1));
-			if(this.inBounds(row - 1, column + 1)) neighbors.add(this.getComponent(row - 1, column + 1));
-			if(this.inBounds(row + 1, column - 1)) neighbors.add(this.getComponent(row + 1, column - 1));
-			if(this.inBounds(row + 1, column + 1)) neighbors.add(this.getComponent(row + 1, column + 1));
-			if(this.inBounds(row - 1, column - 1)) neighbors.add(this.getComponent(row - 1, column - 1));
+		if(this.inBounds(x, y)) {
+			if(this.inBounds(x + 1, y)) neighbors.add(this.getComponent(x + 1, y));
+			if(this.inBounds(x - 1, y)) neighbors.add(this.getComponent(x - 1, y));
+			if(this.inBounds(x, y + 1)) neighbors.add(this.getComponent(x, y + 1));
+			if(this.inBounds(x, y - 1)) neighbors.add(this.getComponent(x, y - 1));
+			if(this.inBounds(x - 1, y + 1)) neighbors.add(this.getComponent(x - 1, y + 1));
+			if(this.inBounds(x + 1, y - 1)) neighbors.add(this.getComponent(x + 1, y - 1));
+			if(this.inBounds(x + 1, y + 1)) neighbors.add(this.getComponent(x + 1, y + 1));
+			if(this.inBounds(x - 1, y - 1)) neighbors.add(this.getComponent(x - 1, y - 1));
 		}
 		return neighbors;
 	}
 
-	private boolean inBounds(int row, int column) {
-		return row >= 0 && row < this.rows && column >= 0 && column < this.columns;
+	private int toIndex(int x, int y) {
+		return x + this.gridWidth * y;
+	}
+
+	private boolean inBounds(int x, int y) {
+		return x >= 0 && x < this.gridWidth && y >= 0 && y < this.gridHeight;
 	}
 
 	public boolean anyMatch(Predicate<C> predicate) {
@@ -77,24 +85,33 @@ public class GridPanel<C extends Component> extends JPanel implements Iterable<C
 		return true;
 	}
 
+	public int indexOf(C component) {
+		for(int i = 0; i < this.components.length; i++) {
+			if(this.components[i] == component) {
+				return i;
+			}
+		}
+		throw new NoSuchElementException("Component does not exist");
+	}
+
 	public C getComponent(int index) {
 		return this.components[index];
 	}
 
-	public C getComponent(int row, int column) {
-		return this.components[column * this.rows + row];
+	public C getComponent(int x, int y) {
+		return this.components[this.toIndex(x, y)];
 	}
 
-	public int getRows() {
-		return this.rows;
+	public int getGridWidth() {
+		return this.gridWidth;
 	}
 
-	public int getColumns() {
-		return this.columns;
+	public int getGridHeight() {
+		return this.gridHeight;
 	}
 
 	public int getCount() {
-		return this.rows * this.columns;
+		return this.components.length;
 	}
 
 	public Stream<C> stream() {
