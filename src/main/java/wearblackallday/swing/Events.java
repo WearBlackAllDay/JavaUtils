@@ -1,5 +1,7 @@
 package wearblackallday.swing;
 
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import java.awt.event.*;
@@ -163,6 +165,49 @@ public class Events {
 
 		public enum Type {
 			SELECTED, DESELECTED, CANCELED
+		}
+	}
+
+	public static final class Document implements DocumentListener {
+
+		private final Type type;
+		private final Consumer<DocumentEvent> event;
+
+		public Document(Type type, Consumer<DocumentEvent> event) {
+			this.type = type;
+			this.event = event;
+		}
+
+		public static Document onInserted(Consumer<DocumentEvent> event) {
+			return new Document(Type.INSERTED, event);
+		}
+
+		public static Document onRemoved(Consumer<DocumentEvent> event) {
+			return new Document(Type.INSERTED, event);
+		}
+
+		public static Document onChanged(Consumer<DocumentEvent> event) {
+			return new Document(Type.INSERTED, event);
+		}
+
+
+		@Override
+		public void insertUpdate(DocumentEvent e) {
+			if(this.type == Type.INSERTED) this.event.accept(e);
+		}
+
+		@Override
+		public void removeUpdate(DocumentEvent e) {
+			if(this.type == Type.REMOVED) this.event.accept(e);
+		}
+
+		@Override
+		public void changedUpdate(DocumentEvent e) {
+			if(this.type == Type.CHANGED) this.event.accept(e);
+		}
+
+		public enum Type {
+			INSERTED, REMOVED, CHANGED
 		}
 	}
 }

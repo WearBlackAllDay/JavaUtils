@@ -117,9 +117,7 @@ public class Strings {
 
 	private static void indentedNewLine(int indentLevel, StringBuilder stringBuilder) {
 		stringBuilder.append("\n");
-		for(int i = 0; i < indentLevel; i++) {
-			stringBuilder.append(" ");
-		}
+		stringBuilder.append(" ".repeat(Math.max(0, indentLevel)));
 	}
 
 	public static <T> void splitAndRun(String text, String regex, Function<String, T> mapper, Consumer<T> action) {

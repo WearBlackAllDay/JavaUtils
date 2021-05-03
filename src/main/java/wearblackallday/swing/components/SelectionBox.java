@@ -3,7 +3,6 @@ package wearblackallday.swing.components;
 import javax.swing.*;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -36,13 +35,11 @@ public class SelectionBox<E> extends JComboBox<String> {
 
 	public SelectionBox(StringMapper<E> mapper, Collection<E> elements) {
 		super(elements.stream().map(mapper::map).toArray(String[]::new));
-
 		this.mapper = mapper;
 		this.elements = (E[])new Object[elements.size()];
 		int i = 0;
-
-		for(Iterator<E> iterator = elements.iterator(); iterator.hasNext(); i++) {
-			this.elements[i] = iterator.next();
+		for(E element : elements) {
+			this.elements[i++] = element;
 		}
 	}
 

@@ -30,4 +30,6 @@ build/
 
 build.gradle
 
-src/META-INF/
+*.json
+
+*.MF

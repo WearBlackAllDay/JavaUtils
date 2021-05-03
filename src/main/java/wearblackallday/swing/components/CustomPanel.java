@@ -17,16 +17,16 @@ import java.util.function.Supplier;
 public class CustomPanel extends JPanel {
 
 	private final Map<String, JTextField> textFields = new HashMap<>();
-	private final int defaultWidth, defaultHeight;
+	private final Dimension standardDimension;
 
 	public CustomPanel(LayoutManager layoutManager, int defaultWidth, int defaultHeight) {
 		this.setLayout(layoutManager);
-		this.defaultWidth = defaultWidth;
-		this.defaultHeight = defaultHeight;
+		this.standardDimension = new Dimension(defaultWidth, defaultHeight);
 	}
 
 	public CustomPanel(LayoutManager layoutManager) {
-		this(layoutManager, 0, 0);
+		this.setLayout(layoutManager);
+		this.standardDimension = null;
 	}
 
 	public CustomPanel(int defaultWidth, int defaultHeight) {
@@ -53,7 +53,12 @@ public class CustomPanel extends JPanel {
 	}
 
 	public CustomPanel addTextField(String text, String id) {
-		return this.addTextField(text, this.defaultWidth, this.defaultHeight, id);
+		JTextField jTextField = new JTextField(text);
+		SwingUtils.setPrompt(jTextField, text);
+		jTextField.setPreferredSize(this.standardDimension);
+		this.add(jTextField);
+		this.textFields.put(id, jTextField);
+		return this;
 	}
 
 	public String getText(String id) {
@@ -73,7 +78,11 @@ public class CustomPanel extends JPanel {
 	}
 
 	public CustomPanel addButton(String text, TriConsumer<CustomPanel, JButton, ActionEvent> actionListener) {
-		return this.addButton(text, this.defaultWidth, this.defaultHeight, actionListener);
+		JButton jButton = new JButton(text);
+		jButton.setPreferredSize(this.standardDimension);
+		jButton.addActionListener(e -> actionListener.accept(this, jButton, e));
+		this.add(jButton);
+		return this;
 	}
 
 	public CustomPanel addComponent(Component component) {

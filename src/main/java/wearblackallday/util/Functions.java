@@ -9,6 +9,15 @@ public class Functions {
 		return object -> (T)object;
 	}
 
+	@SafeVarargs
+	public static <F, T> T[] map(Function<F, T> mapper, F... targets) {
+		T[] result = (T[])new Object[targets.length];
+		for(int i = 0; i < targets.length; i++) {
+			result[i] = mapper.apply(targets[i]);
+		}
+		return result;
+	}
+
 //	public static <T> Function<? super Object, Stream<T>> filterCast(Class<T> type) {
 //		return object -> type.isInstance(object) ? Stream.of((T)object) : Stream.empty();
 //	}

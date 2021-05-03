@@ -1,4 +1,4 @@
-package wearblackallday.threading;
+package wearblackallday.util;
 
 import java.util.Iterator;
 import java.util.concurrent.CountDownLatch;
@@ -11,7 +11,6 @@ import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 public class ThreadPool {
-
 	private ThreadPoolExecutor executor;
 	private final int threadCount;
 	private final IntLatch activeCount = new IntLatch();

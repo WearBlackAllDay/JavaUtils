@@ -7,6 +7,18 @@ import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
 
 public class Ints {
+	public static int concat(int... ints) {
+		return concatBase(10, ints);
+	}
+
+	public static int concatBase(int base, int... ints) {
+		int result = 0;
+		for(int i : ints) {
+			result *= base;
+			result += i;
+		}
+		return result;
+	}
 
 	public static IntStream randomRange(int bound) {
 		return randomRange(0, bound);
