@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.Container;
 import java.awt.Toolkit;
 
+@Deprecated
 public class FrameBuilder {
 
 	private String title = "";

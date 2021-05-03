@@ -1,4 +1,4 @@
-package wearblackallday.swing.components;
+package wearblackallday.swing.components.builder;
 
 import wearblackallday.swing.SwingUtils;
 
@@ -12,6 +12,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+@Deprecated
 public class MenuBuilder extends JMenuBar {
 
 	private final Map<Key<?>, JMenuItem> items = new HashMap<>();
