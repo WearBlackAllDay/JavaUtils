@@ -25,9 +25,36 @@ public class GridPanel<C extends JComponent> extends JPanel implements Iterable<
 			gbc.gridx = x;
 			for(int y = 0; y < height; y++) {
 				gbc.gridy = y;
-					this.add(this.components[this.toIndex(x, y)] = componentSupplier.get(), gbc);
+				this.add(this.components[this.toIndex(x, y)] = componentSupplier.get(), gbc);
 			}
 		}
+	}
+
+	public int getGridWidth() {
+		return this.gridWidth;
+	}
+
+	public int getGridHeight() {
+		return this.gridHeight;
+	}
+
+	public int getCount() {
+		return this.components.length;
+	}
+
+	public C getComponent(int index) {
+		return this.components[index];
+	}
+
+	public C getComponent(int x, int y) {
+		return this.components[this.toIndex(x, y)];
+	}
+
+	public int indexOf(C component) {
+		for(int i = 0; i < this.components.length; i++) {
+			if(this.components[i] == component) return i;
+		}
+		return -1;
 	}
 
 	public List<C> getNeighbors(C component) {
@@ -53,14 +80,6 @@ public class GridPanel<C extends JComponent> extends JPanel implements Iterable<
 		return neighbors;
 	}
 
-	private int toIndex(int x, int y) {
-		return x + this.gridWidth * y;
-	}
-
-	private boolean inBounds(int x, int y) {
-		return x >= 0 && x < this.gridWidth && y >= 0 && y < this.gridHeight;
-	}
-
 	public boolean anyMatch(Predicate<C> predicate) {
 		for(C c : this.components) {
 			if(predicate.test(c)) return true;
@@ -82,35 +101,48 @@ public class GridPanel<C extends JComponent> extends JPanel implements Iterable<
 		return true;
 	}
 
-	public int indexOf(C component) {
-		for(int i = 0; i < this.components.length; i++) {
-			if(this.components[i] == component) return i;
+	public GridPanel<C> subGrid(int endX, int endY) {
+		return this.subGrid(0, endX, 0, endY);
+	}
+
+	@SuppressWarnings("unchecked")
+	public GridPanel<C> subGrid(int startX, int endX, int startY, int endY) {
+		C[] subArray = (C[])new JComponent[(endX - startX) * (endY - startY)];
+		int i = 0;
+		for(int x = startX; x < endX; x++) {
+			for(int y = startY; y < endY; y++) {
+				subArray[i++] = this.components[this.toIndex(x, y)];
+			}
 		}
-		throw new NoSuchElementException("Component does not exist");
-	}
-
-	public C getComponent(int index) {
-		return this.components[index];
-	}
-
-	public C getComponent(int x, int y) {
-		return this.components[this.toIndex(x, y)];
-	}
-
-	public int getGridWidth() {
-		return this.gridWidth;
-	}
-
-	public int getGridHeight() {
-		return this.gridHeight;
-	}
-
-	public int getCount() {
-		return this.components.length;
+		Iterator<C> iterator = Arrays.stream(subArray).iterator();
+		return new GridPanel<>(endX - startX, endY - startY, iterator::next);
 	}
 
 	public Stream<C> stream() {
 		return Arrays.stream(this.components);
+	}
+
+	private int toIndex(int x, int y) {
+		return x + this.gridWidth * y;
+	}
+
+	private boolean inBounds(int x, int y) {
+		return x >= 0 && x < this.gridWidth && y >= 0 && y < this.gridHeight;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder()
+			.append("GridPanel {\n");
+		for(int i = 0; i < this.components.length; i++) {
+			stringBuilder
+				.append(i)
+				.append(":\n")
+				.append(this.components[i].toString())
+				.append("\n");
+		}
+		stringBuilder.append("}");
+		return stringBuilder.toString();
 	}
 
 	@Override
@@ -130,7 +162,7 @@ public class GridPanel<C extends JComponent> extends JPanel implements Iterable<
 		return new ArrayIterator();
 	}
 
-	private class ArrayIterator implements Iterator<C> {
+	protected class ArrayIterator implements Iterator<C> {
 		private int current;
 
 		@Override
