@@ -1,7 +1,6 @@
 package wearblackallday.swing.components;
 
 import javax.swing.*;
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.*;
@@ -10,25 +9,23 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public class GridPanel<C extends Component> extends JPanel implements Iterable<C> {
-
+public class GridPanel<C extends JComponent> extends JPanel implements Iterable<C> {
 	private final int gridWidth, gridHeight;
 	private final C[] components;
 
 	@SuppressWarnings("unchecked")
 	public GridPanel(int width, int height, Supplier<C> componentSupplier) {
+		super(new GridBagLayout());
 		this.gridWidth = width;
 		this.gridHeight = height;
-		this.components = (C[])new Component[width * height];
+		this.components = (C[])new JComponent[width * height];
 
-		this.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-
 		for(int x = 0; x < width; x++) {
 			gbc.gridx = x;
 			for(int y = 0; y < height; y++) {
 				gbc.gridy = y;
-				this.add(this.components[this.toIndex(x, y)] = componentSupplier.get(), gbc);
+					this.add(this.components[this.toIndex(x, y)] = componentSupplier.get(), gbc);
 			}
 		}
 	}
@@ -65,21 +62,21 @@ public class GridPanel<C extends Component> extends JPanel implements Iterable<C
 	}
 
 	public boolean anyMatch(Predicate<C> predicate) {
-		for(C c : this) {
+		for(C c : this.components) {
 			if(predicate.test(c)) return true;
 		}
 		return false;
 	}
 
 	public boolean allMatch(Predicate<C> predicate) {
-		for(C c : this) {
+		for(C c : this.components) {
 			if(!predicate.test(c)) return false;
 		}
 		return true;
 	}
 
 	public boolean noneMatch(Predicate<C> predicate) {
-		for(C c : this) {
+		for(C c : this.components) {
 			if(predicate.test(c)) return false;
 		}
 		return true;
@@ -87,9 +84,7 @@ public class GridPanel<C extends Component> extends JPanel implements Iterable<C
 
 	public int indexOf(C component) {
 		for(int i = 0; i < this.components.length; i++) {
-			if(this.components[i] == component) {
-				return i;
-			}
+			if(this.components[i] == component) return i;
 		}
 		throw new NoSuchElementException("Component does not exist");
 	}
@@ -120,7 +115,9 @@ public class GridPanel<C extends Component> extends JPanel implements Iterable<C
 
 	@Override
 	public void forEach(Consumer<? super C> action) {
-		this.stream().forEach(action);
+		for(C c : this.components) {
+			action.accept(c);
+		}
 	}
 
 	@Override
@@ -130,6 +127,20 @@ public class GridPanel<C extends Component> extends JPanel implements Iterable<C
 
 	@Override
 	public Iterator<C> iterator() {
-		return this.stream().iterator();
+		return new ArrayIterator();
+	}
+
+	private class ArrayIterator implements Iterator<C> {
+		private int current;
+
+		@Override
+		public boolean hasNext() {
+			return this.current < GridPanel.this.components.length;
+		}
+
+		@Override
+		public C next() {
+			return GridPanel.this.components[this.current++];
+		}
 	}
 }

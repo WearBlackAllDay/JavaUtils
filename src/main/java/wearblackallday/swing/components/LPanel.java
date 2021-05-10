@@ -76,7 +76,6 @@ public class LPanel extends JPanel {
 		return this;
 	}
 
-
 	public LPanel addComponent(JComponent component) {
 		this.add(component);
 		return this;
