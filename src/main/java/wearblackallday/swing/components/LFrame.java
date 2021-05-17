@@ -42,6 +42,7 @@ public class LFrame extends JFrame {
 
 	public LFrame fullScreen() {
 		this.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		return this;
 	}
 

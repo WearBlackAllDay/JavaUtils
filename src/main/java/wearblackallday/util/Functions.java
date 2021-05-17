@@ -3,7 +3,8 @@ package wearblackallday.util;
 import java.util.function.Function;
 
 @SuppressWarnings("unchecked")
-public class Functions {
+public final class Functions {
+	private Functions() {}
 
 	public static <T> Function<? super Object, T> cast(Class<T> type) {
 		return object -> (T)object;

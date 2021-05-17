@@ -6,7 +6,9 @@ import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
 
-public class Ints {
+public final class Ints {
+	private Ints() {}
+
 	public static int concat(int... ints) {
 		return concatBase(10, ints);
 	}

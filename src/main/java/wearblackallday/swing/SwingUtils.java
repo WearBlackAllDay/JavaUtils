@@ -7,6 +7,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
 public class SwingUtils {
+	private SwingUtils() {}
+
 	public static void setPrompt(JTextComponent jTextComponent, String text) {
 		jTextComponent.setText(text);
 		jTextComponent.setToolTipText(text);

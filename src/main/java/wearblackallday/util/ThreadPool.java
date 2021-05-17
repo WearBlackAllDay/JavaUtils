@@ -136,43 +136,33 @@ public class ThreadPool {
 	}
 
 	private static class IntLatch {
-
 		private CountDownLatch latch;
-		private final Object lock = new Object();
 
-		public IntLatch() {
+		private IntLatch() {
 			this(0);
 		}
 
-		public IntLatch(int count) {
+		private IntLatch(int count) {
 			this.latch = new CountDownLatch(count);
 		}
 
-		public int getCount() {
-			synchronized(this.lock) {
-				return (int)this.latch.getCount();
-			}
+		private synchronized int getCount() {
+			return (int)this.latch.getCount();
 		}
 
-		public void decrement() {
-			synchronized(this.lock) {
-				this.latch.countDown();
-				this.lock.notifyAll();
-			}
+		private synchronized void decrement() {
+			this.latch.countDown();
+			this.notifyAll();
 		}
 
-		public void increment() {
-			synchronized(this.lock) {
-				this.latch = new CountDownLatch((int)this.latch.getCount() + 1);
-				this.lock.notifyAll();
-			}
+		private synchronized void increment() {
+			this.latch = new CountDownLatch((int)this.latch.getCount() + 1);
+			this.notifyAll();
 		}
 
-		public void waitUntil(IntPredicate predicate) throws InterruptedException {
-			synchronized(this.lock) {
-				while(!predicate.test(this.getCount())) {
-					this.lock.wait();
-				}
+		private synchronized void waitUntil(IntPredicate predicate) throws InterruptedException {
+			while(!predicate.test(this.getCount())) {
+				this.wait();
 			}
 		}
 	}

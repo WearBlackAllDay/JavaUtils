@@ -7,7 +7,8 @@ import javax.swing.event.MenuListener;
 import java.awt.event.*;
 import java.util.function.Consumer;
 
-public class Events {
+public final class Events {
+	private Events() {}
 
 	public static final class Mouse implements MouseListener, MouseMotionListener {
 		private final Type type;
@@ -169,7 +170,6 @@ public class Events {
 	}
 
 	public static final class Document implements DocumentListener {
-
 		private final Type type;
 		private final Consumer<DocumentEvent> event;
 
@@ -208,6 +208,83 @@ public class Events {
 
 		public enum Type {
 			INSERTED, REMOVED, CHANGED
+		}
+	}
+
+	public static final class Window implements WindowListener {
+		private final Type type;
+		private final Consumer<WindowEvent> event;
+
+		public Window(Type type, Consumer<WindowEvent> event) {
+			this.type = type;
+			this.event = event;
+		}
+
+		public static Window onOpened(Consumer<WindowEvent> event) {
+			return new Window(Type.OPENED, event);
+		}
+
+		public static Window onClosing(Consumer<WindowEvent> event) {
+			return new Window(Type.CLOSING, event);
+		}
+
+		public static Window onClosed(Consumer<WindowEvent> event) {
+			return new Window(Type.CLOSED, event);
+		}
+
+		public static Window onIconified(Consumer<WindowEvent> event) {
+			return new Window(Type.ICONIFIED, event);
+		}
+
+		public static Window onDeIconified(Consumer<WindowEvent> event) {
+			return new Window(Type.DE_ICONIFIED, event);
+		}
+
+		public static Window onActivated(Consumer<WindowEvent> event) {
+			return new Window(Type.ACTIVATED, event);
+		}
+
+		public static Window onDeactivated(Consumer<WindowEvent> event) {
+			return new Window(Type.DEACTIVATED, event);
+		}
+
+		@Override
+		public void windowOpened(WindowEvent e) {
+			if(this.type == Type.OPENED) this.event.accept(e);
+		}
+
+		@Override
+		public void windowClosing(WindowEvent e) {
+			if(this.type == Type.CLOSING) this.event.accept(e);
+		}
+
+		@Override
+		public void windowClosed(WindowEvent e) {
+			if(this.type == Type.CLOSED) this.event.accept(e);
+		}
+
+		@Override
+		public void windowIconified(WindowEvent e) {
+			if(this.type == Type.ICONIFIED) this.event.accept(e);
+		}
+
+		@Override
+		public void windowDeiconified(WindowEvent e) {
+			if(this.type == Type.DE_ICONIFIED) this.event.accept(e);
+		}
+
+		@Override
+		public void windowActivated(WindowEvent e) {
+			if(this.type == Type.ACTIVATED) this.event.accept(e);
+		}
+
+		@Override
+		public void windowDeactivated(WindowEvent e) {
+			if(this.type == Type.DEACTIVATED) this.event.accept(e);
+		}
+
+		public enum Type {
+			OPENED, CLOSING, CLOSED, ICONIFIED, DE_ICONIFIED, ACTIVATED, DEACTIVATED
 		}
 	}
 }

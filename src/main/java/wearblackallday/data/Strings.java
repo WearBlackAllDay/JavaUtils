@@ -9,7 +9,9 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class Strings {
+public final class Strings {
+	private Strings() {}
+
 	private static final Random RANDOM = new Random();
 
 	public static void clipboard(String input) {

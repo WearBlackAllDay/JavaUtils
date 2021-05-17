@@ -108,14 +108,13 @@ public class GridPanel<C extends JComponent> extends JPanel implements Iterable<
 	@SuppressWarnings("unchecked")
 	public GridPanel<C> subGrid(int startX, int endX, int startY, int endY) {
 		C[] subArray = (C[])new JComponent[(endX - startX) * (endY - startY)];
-		int i = 0;
-		for(int x = startX; x < endX; x++) {
-			for(int y = startY; y < endY; y++) {
-				subArray[i++] = this.components[this.toIndex(x, y)];
+		for(int i = 0, x = startX; x < endX; x++) {
+			for(int y = startY; y < endY; y++, i++) {
+				subArray[i] = this.components[this.toIndex(x, y)];
 			}
 		}
-		Iterator<C> iterator = Arrays.stream(subArray).iterator();
-		return new GridPanel<>(endX - startX, endY - startY, iterator::next);
+		int[] finalInt = {0};
+		return new GridPanel<>(endX - startX, endY - startY, () -> subArray[finalInt[0]++]);
 	}
 
 	public Stream<C> stream() {
@@ -154,7 +153,7 @@ public class GridPanel<C extends JComponent> extends JPanel implements Iterable<
 
 	@Override
 	public Spliterator<C> spliterator() {
-		return this.stream().spliterator();
+		return Arrays.spliterator(this.components);
 	}
 
 	@Override
