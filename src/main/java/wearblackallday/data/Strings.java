@@ -58,6 +58,14 @@ public final class Strings {
 		return input.replaceFirst(Strings.getFirst(input, chars), "");
 	}
 
+	public static String trimLeadingChars(String str, char c) {
+		int i = 0;
+		while(str.charAt(i) == c) {
+			if(i++ == str.length() - 1) return "";
+		}
+		return str.substring(i);
+	}
+
 	public static String randomAlphabetic(int length) {
 		return RANDOM.ints(97, 123)
 			.limit(length)

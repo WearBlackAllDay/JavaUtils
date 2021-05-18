@@ -1,6 +1,9 @@
 package wearblackallday.util;
 
+import java.util.Comparator;
+import java.util.Random;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 @SuppressWarnings("unchecked")
 public final class Functions {
@@ -17,6 +20,14 @@ public final class Functions {
 			result[i] = mapper.apply(targets[i]);
 		}
 		return result;
+	}
+
+	public static <T> Stream<T> shuffle(Stream<T> stream) {
+		return shuffle(stream, new Random());
+	}
+
+	public static <T> Stream<T> shuffle(Stream<T> stream, Random rng) {
+		return stream.sorted(Comparator.comparingInt(t -> rng.nextInt()));
 	}
 
 //	public static <T> Function<? super Object, Stream<T>> filterCast(Class<T> type) {

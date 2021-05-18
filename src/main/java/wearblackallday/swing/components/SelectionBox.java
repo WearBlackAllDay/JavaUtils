@@ -9,7 +9,6 @@ import java.util.stream.Stream;
 
 @SuppressWarnings("unchecked")
 public class SelectionBox<E> extends JComboBox<String> {
-
 	private final StringMapper<E> mapper;
 	private final E[] elements;
 

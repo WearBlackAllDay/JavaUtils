@@ -101,6 +101,18 @@ public class GridPanel<C extends JComponent> extends JPanel implements Iterable<
 		return true;
 	}
 
+	public void forEachX(int atY, Consumer<C> consumer) {
+		for(int x = 0; x < this.gridWidth; x++) {
+			consumer.accept(this.getComponent(x, atY));
+		}
+	}
+
+	public void forEachY(int atX, Consumer<C> consumer) {
+		for(int y = 0; y < this.gridHeight; y++) {
+			consumer.accept(this.getComponent(atX, y));
+		}
+	}
+
 	public GridPanel<C> subGrid(int endX, int endY) {
 		return this.subGrid(0, endX, 0, endY);
 	}
