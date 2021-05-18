@@ -183,11 +183,11 @@ public final class Events {
 		}
 
 		public static Document onRemoved(Consumer<DocumentEvent> event) {
-			return new Document(Type.INSERTED, event);
+			return new Document(Type.REMOVED, event);
 		}
 
 		public static Document onChanged(Consumer<DocumentEvent> event) {
-			return new Document(Type.INSERTED, event);
+			return new Document(Type.CHANGED, event);
 		}
 
 
@@ -285,6 +285,56 @@ public final class Events {
 
 		public enum Type {
 			OPENED, CLOSING, CLOSED, ICONIFIED, DE_ICONIFIED, ACTIVATED, DEACTIVATED
+		}
+	}
+
+	public static final class Component implements ComponentListener {
+		private final Type type;
+		private final Consumer<ComponentEvent> event;
+
+		public Component(Type type, Consumer<ComponentEvent> event) {
+			this.type = type;
+			this.event = event;
+		}
+
+		public static Component onResized(Consumer<ComponentEvent> event) {
+			return new Component(Type.RESIZED, event);
+		}
+
+		public static Component onMoved(Consumer<ComponentEvent> event) {
+			return new Component(Type.MOVED, event);
+		}
+
+		public static Component onShown(Consumer<ComponentEvent> event) {
+			return new Component(Type.SHOWN, event);
+		}
+
+		public static Component onHidden(Consumer<ComponentEvent> event) {
+			return new Component(Type.HIDDEN, event);
+		}
+
+		@Override
+		public void componentResized(ComponentEvent e) {
+			if(this.type == Type.RESIZED) this.event.accept(e);
+		}
+
+		@Override
+		public void componentMoved(ComponentEvent e) {
+			if(this.type == Type.MOVED) this.event.accept(e);
+		}
+
+		@Override
+		public void componentShown(ComponentEvent e) {
+			if(this.type == Type.SHOWN) this.event.accept(e);
+		}
+
+		@Override
+		public void componentHidden(ComponentEvent e) {
+			if(this.type == Type.HIDDEN) this.event.accept(e);
+		}
+
+		public enum Type {
+			RESIZED, MOVED, SHOWN, HIDDEN
 		}
 	}
 }
