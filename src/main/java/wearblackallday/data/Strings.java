@@ -2,60 +2,64 @@ package wearblackallday.data;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 public final class Strings {
 	private Strings() {}
 
 	private static final Random RANDOM = new Random();
 
-	public static void clipboard(String input) {
-		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(input), null);
+	public static void clipboard(String string) {
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(string), null);
 	}
 
-	public static String[] splitLines(String input) {
-		return input.trim().split("[\\r\\n]+");
+	public static String[] splitLines(String string) {
+		return string.trim().split("[\\r\\n]+");
 	}
 
-	public static int[] splitToInts(String input) {
-		return Arrays.stream(splitLines(input)).mapToInt(Integer::parseInt).toArray();
+	public static int countLines(String string) {
+		return Strings.splitLines(string).length;
 	}
 
-	public static int[] splitToInts(String input, String regex) {
-		return Arrays.stream(input.split(regex)).mapToInt(Integer::parseInt).toArray();
+	public static String removeEmptyLines(String string) {
+		return string.replaceAll("(?m)^[ \\t]*\\r?\\n", "");
 	}
 
-	public static long[] splitToLongs(String input) {
-		return Arrays.stream(splitLines(input)).mapToLong(Long::parseLong).toArray();
+	public static int[] splitToInts(String string) {
+		return splitToInts(string, "[\\r\\n]+");
 	}
 
-	public static long[] splitToLongs(String input, String regex) {
-		return Arrays.stream(input.split(regex)).mapToLong(Long::parseLong).toArray();
+	public static int[] splitToInts(String string, String regex) {
+		String[] lines = string.split(regex);
+		int[] ints = new int[lines.length];
+		for(int i = 0; i < ints.length; i++) {
+			ints[i] = Integer.parseInt(lines[i]);
+		}
+		return ints;
 	}
 
-	public static int[] readIntArray(String input) {
-		return Stream.of(input.replaceAll("[\\[\\]]", "").split(",")).mapToInt(Integer::parseInt).toArray();
+	public static long[] splitToLongs(String string) {
+		return splitToLongs(string, "[\\r\\n]+");
 	}
 
-	public static long[] readLongArray(String input) {
-		return Stream.of(input.replaceAll("[\\[\\]]", "").split(",")).mapToLong(Long::parseLong).toArray();
+	public static long[] splitToLongs(String string, String regex) {
+		String[] lines = string.split(regex);
+		long[] longs = new long[lines.length];
+		for(int i = 0; i < longs.length; i++) {
+			longs[i] = Integer.parseInt(lines[i]);
+		}
+		return longs;
 	}
 
-	public static int countLines(String input) {
-		return Strings.splitLines(input).length;
+	public static String getFirst(String string, int chars) {
+		return string.substring(0, Math.min(string.length(), chars));
 	}
 
-	public static String getFirst(String input, int chars) {
-		return input.substring(0, Math.min(input.length(), chars));
-	}
-
-	public static String chopFirst(String input, int chars) {
-		return input.replaceFirst(Strings.getFirst(input, chars), "");
+	public static String chopFirst(String string, int chars) {
+		return string.replaceFirst(Strings.getFirst(string, chars), "");
 	}
 
 	public static String trimLeadingChars(String str, char c) {
@@ -82,12 +86,7 @@ public final class Strings {
 	}
 
 	public static String formatJSON(String uglyJSON) {
-		return Strings.formatJSON(uglyJSON, 1);
-	}
-
-	public static String formatJSON(String uglyJSON, int indent) {
 		StringBuilder prettyJSONBuilder = new StringBuilder();
-		int indentLevel = indent;
 		boolean inQuote = false;
 		for(char charFromUglyJSON : uglyJSON.toCharArray()) {
 			switch(charFromUglyJSON) {
@@ -103,19 +102,17 @@ public final class Strings {
 				case '{':
 				case '[':
 					prettyJSONBuilder.append(charFromUglyJSON);
-					indentLevel++;
-					Strings.indentedNewLine(indentLevel, prettyJSONBuilder);
+					prettyJSONBuilder.append("\n ");
 					break;
 				case '}':
 				case ']':
-					indentLevel--;
-					Strings.indentedNewLine(indentLevel, prettyJSONBuilder);
+					prettyJSONBuilder.append("\n ");
 					prettyJSONBuilder.append(charFromUglyJSON);
 					break;
 				case ',':
 					prettyJSONBuilder.append(charFromUglyJSON);
 					if(!inQuote) {
-						Strings.indentedNewLine(indentLevel, prettyJSONBuilder);
+						prettyJSONBuilder.append("\n ");
 					}
 					break;
 				default:
@@ -123,13 +120,6 @@ public final class Strings {
 			}
 		}
 		return prettyJSONBuilder.toString();
-	}
-
-	private static void indentedNewLine(int indentLevel, StringBuilder stringBuilder) {
-		stringBuilder.append("\n");
-		for(int i = 0; i < indentLevel; i++) {
-			stringBuilder.append(" ");
-		}
 	}
 
 	public static <T> void splitAndRun(String text, String regex, Function<String, T> mapper, Consumer<T> action) {

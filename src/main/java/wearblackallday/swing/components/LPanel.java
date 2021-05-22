@@ -52,6 +52,14 @@ public class LPanel extends JPanel {
 		return this.textFields.get(id).getText();
 	}
 
+	public int getInt(String id) {
+		return Integer.parseInt(this.getText(id).trim());
+	}
+
+	public long getLong(String id) {
+		return Long.parseLong(this.getText(id).trim());
+	}
+
 	public LPanel addButton(String text, TriConsumer<LPanel, JButton, ActionEvent> actionListener) {
 		return this.addButton(text, (panel, button) -> button.addActionListener(e -> actionListener.accept(panel, button, e)));
 	}

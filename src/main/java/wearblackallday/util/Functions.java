@@ -2,7 +2,7 @@ package wearblackallday.util;
 
 import java.util.Comparator;
 import java.util.Random;
-import java.util.function.Function;
+import java.util.function.*;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unchecked")
@@ -20,6 +20,22 @@ public final class Functions {
 			result[i] = mapper.apply(targets[i]);
 		}
 		return result;
+	}
+
+	public static <F, T> Predicate<F> filterAttribute(Function<F, T> extractor, Predicate<T> condition) {
+		return object -> condition.test(extractor.apply(object));
+	}
+
+	public static <F> Predicate<F> filterInt(ToIntFunction<F> intExtractor, IntPredicate condition) {
+		return object -> condition.test(intExtractor.applyAsInt(object));
+	}
+
+	public static <F> Predicate<F> filterLong(ToLongFunction<F> longExtractor, LongPredicate condition) {
+		return object -> condition.test(longExtractor.applyAsLong(object));
+	}
+
+	public static <F> Predicate<F> filterDouble(ToDoubleFunction<F> doubleExtractor, DoublePredicate condition) {
+		return object -> condition.test(doubleExtractor.applyAsDouble(object));
 	}
 
 	public static <T> Stream<T> shuffle(Stream<T> stream) {
