@@ -42,44 +42,44 @@ public class BitArray {
 		this.storage[index >> 6] ^= 1L << index % 64;
 	}
 
-	public BitArray andThis(BitArray otherPacker) {
-		this.compareLength(otherPacker);
+	public BitArray andThis(BitArray bitArray) {
+		this.compareLength(bitArray);
 		for(int i = 0; i < this.storage.length; i++) {
-			this.storage[i] &= otherPacker.storage[i];
+			this.storage[i] &= bitArray.storage[i];
 		}
 		return this;
 	}
 
-	public BitArray orThis(BitArray otherPacker) {
-		this.compareLength(otherPacker);
+	public BitArray orThis(BitArray bitArray) {
+		this.compareLength(bitArray);
 		for(int i = 0; i < this.storage.length; i++) {
-			this.storage[i] |= otherPacker.storage[i];
+			this.storage[i] |= bitArray.storage[i];
 		}
 		return this;
 	}
 
-	public BitArray xorThis(BitArray otherPacker) {
-		this.compareLength(otherPacker);
+	public BitArray xorThis(BitArray bitArray) {
+		this.compareLength(bitArray);
 		for(int i = 0; i < this.storage.length; i++) {
-			this.storage[i] ^= otherPacker.storage[i];
+			this.storage[i] ^= bitArray.storage[i];
 		}
 		return this;
 	}
 
-	public BitArray andNew(BitArray otherPacker) {
-		return this.copy().andThis(otherPacker);
+	public BitArray andNew(BitArray bitArray) {
+		return this.copy().andThis(bitArray);
 	}
 
-	public BitArray orNew(BitArray otherPacker) {
-		return this.copy().orThis(otherPacker);
+	public BitArray orNew(BitArray bitArray) {
+		return this.copy().orThis(bitArray);
 	}
 
-	public BitArray xorNew(BitArray otherPacker) {
-		return this.copy().xorThis(otherPacker);
+	public BitArray xorNew(BitArray bitArray) {
+		return this.copy().xorThis(bitArray);
 	}
 
-	private void compareLength(BitArray otherPacker) {
-		if(this.length != otherPacker.length) throw new IllegalArgumentException("mismatch in length");
+	private void compareLength(BitArray bitArray) {
+		if(this.length != bitArray.length) throw new IllegalArgumentException("mismatch in length");
 	}
 
 	public BitArray copy() {

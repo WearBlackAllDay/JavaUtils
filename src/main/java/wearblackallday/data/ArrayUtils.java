@@ -29,6 +29,7 @@ public final class ArrayUtils {
 	public static PrimitiveIterator.OfDouble iterator(double[] array) {
 		return new DoubleArrayIterator(array);
 	}
+
 	public static <T> Supplier<T> supplier(T[] array) {
 		return new ArrayIterator<>(array);
 	}

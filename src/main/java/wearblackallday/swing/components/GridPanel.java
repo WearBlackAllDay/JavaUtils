@@ -1,19 +1,20 @@
 package wearblackallday.swing.components;
 
+import wearblackallday.data.ArrayUtils;
+import wearblackallday.util.ArrayIterable;
+
 import javax.swing.*;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
-public class GridPanel<C extends JComponent> extends JPanel implements Iterable<C> {
+public class GridPanel<C extends JComponent> extends JPanel implements ArrayIterable<C> {
 	private final int gridWidth, gridHeight;
 	private final C[] components;
 
-	@SuppressWarnings("unchecked")
 	public GridPanel(int width, int height, Supplier<C> componentSupplier) {
 		super(new GridBagLayout());
 		this.gridWidth = width;
@@ -80,27 +81,6 @@ public class GridPanel<C extends JComponent> extends JPanel implements Iterable<
 		return neighbors;
 	}
 
-	public boolean anyMatch(Predicate<C> predicate) {
-		for(C c : this.components) {
-			if(predicate.test(c)) return true;
-		}
-		return false;
-	}
-
-	public boolean allMatch(Predicate<C> predicate) {
-		for(C c : this.components) {
-			if(!predicate.test(c)) return false;
-		}
-		return true;
-	}
-
-	public boolean noneMatch(Predicate<C> predicate) {
-		for(C c : this.components) {
-			if(predicate.test(c)) return false;
-		}
-		return true;
-	}
-
 	public void forEachX(int atY, Consumer<C> consumer) {
 		for(int x = 0; x < this.gridWidth; x++) {
 			consumer.accept(this.getComponent(x, atY));
@@ -117,7 +97,6 @@ public class GridPanel<C extends JComponent> extends JPanel implements Iterable<
 		return this.subGrid(0, endX, 0, endY);
 	}
 
-	@SuppressWarnings("unchecked")
 	public GridPanel<C> subGrid(int startX, int endX, int startY, int endY) {
 		C[] subArray = (C[])new JComponent[(endX - startX) * (endY - startY)];
 		for(int i = 0, x = startX; x < endX; x++) {
@@ -125,12 +104,7 @@ public class GridPanel<C extends JComponent> extends JPanel implements Iterable<
 				subArray[i] = this.components[this.toIndex(x, y)];
 			}
 		}
-		int[] finalInt = {0};
-		return new GridPanel<>(endX - startX, endY - startY, () -> subArray[finalInt[0]++]);
-	}
-
-	public Stream<C> stream() {
-		return Arrays.stream(this.components);
+		return new GridPanel<>(endX - startX, endY - startY, ArrayUtils.supplier(subArray));
 	}
 
 	private int toIndex(int x, int y) {
@@ -157,33 +131,7 @@ public class GridPanel<C extends JComponent> extends JPanel implements Iterable<
 	}
 
 	@Override
-	public void forEach(Consumer<? super C> action) {
-		for(C c : this.components) {
-			action.accept(c);
-		}
-	}
-
-	@Override
-	public Spliterator<C> spliterator() {
-		return Arrays.spliterator(this.components);
-	}
-
-	@Override
-	public Iterator<C> iterator() {
-		return new ArrayIterator();
-	}
-
-	protected class ArrayIterator implements Iterator<C> {
-		private int current;
-
-		@Override
-		public boolean hasNext() {
-			return this.current < GridPanel.this.components.length;
-		}
-
-		@Override
-		public C next() {
-			return GridPanel.this.components[this.current++];
-		}
+	public C[] toArray() {
+		return this.components;
 	}
 }
