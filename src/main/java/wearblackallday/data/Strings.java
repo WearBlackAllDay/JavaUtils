@@ -49,7 +49,7 @@ public final class Strings {
 		String[] lines = string.split(regex);
 		long[] longs = new long[lines.length];
 		for(int i = 0; i < longs.length; i++) {
-			longs[i] = Integer.parseInt(lines[i]);
+			longs[i] = Long.parseLong(lines[i]);
 		}
 		return longs;
 	}

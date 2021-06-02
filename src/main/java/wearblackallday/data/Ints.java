@@ -7,7 +7,8 @@ import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
 
 public final class Ints {
-	private Ints() {}
+	private Ints() {
+	}
 
 	public static int concat(int... ints) {
 		return concatBase(10, ints);
@@ -55,10 +56,8 @@ public final class Ints {
 				return false;
 			}
 			int nextIndex = this.random.nextInt(this.source.length - this.currentIndex) + this.currentIndex;
-			int nextInt = this.source[nextIndex];
-			this.source[nextIndex] = this.source[this.currentIndex];
-			this.currentIndex++;
-			action.accept(nextInt);
+			action.accept(this.source[nextIndex]);
+			this.source[nextIndex] = this.source[this.currentIndex++];
 			return true;
 		}
 	}
