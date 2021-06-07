@@ -6,3 +6,6 @@ repositories {
   mavenCentral()
 }
 
+sourceCompatibility = "16"
+targetCompatibility = "16"
+
