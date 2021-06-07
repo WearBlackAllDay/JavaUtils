@@ -3,6 +3,17 @@ plugins {
     id 'maven-publish'
 }
 
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = "com.github.wearblackallday"
+            artifactId = "JavaUtils"
+            version = "1.0"
+
+            from components.java
+        }
+    }
+}
 repositories {
   mavenCentral()
 }
