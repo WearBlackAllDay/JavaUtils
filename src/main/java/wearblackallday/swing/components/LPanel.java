@@ -64,6 +64,10 @@ public class LPanel extends JPanel {
 		return this.addButton(text, (panel, button) -> button.addActionListener(e -> actionListener.accept(panel, button, e)));
 	}
 
+	public LPanel addButton(String text, Runnable action) {
+		return this.addButton(text, (panel, button, event) -> action.run());
+	}
+
 	public LPanel addButton(String text, BiConsumer<LPanel, JButton> buttonCode) {
 		JButton jButton = new JButton(text);
 		jButton.setPreferredSize(this.standardDimension);
@@ -74,6 +78,10 @@ public class LPanel extends JPanel {
 
 	public LPanel addButton(String text, int width, int height, TriConsumer<LPanel, JButton, ActionEvent> actionListener) {
 		return this.addButton(text, width, height, (panel, button) -> button.addActionListener(e -> actionListener.accept(panel, button, e)));
+	}
+
+	public LPanel addButton(String text, int width, int height, Runnable action) {
+		return this.addButton(text, width, height, (panel, button, event) -> action.run());
 	}
 
 	public LPanel addButton(String text, int width, int height, BiConsumer<LPanel, JButton> buttonCode) {

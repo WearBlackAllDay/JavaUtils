@@ -21,6 +21,10 @@ public class LMenuBar extends JMenuBar {
 			super(title);
 		}
 
+		public LMenu withItem(String title, Runnable action) {
+			return this.withItem(title, (menu, item, event) -> action.run());
+		}
+
 		public LMenu withItem(String title, BiConsumer<LMenu, JMenuItem> componentCode) {
 			JMenuItem menuItem = new JMenuItem(title);
 			componentCode.accept(this, menuItem);
@@ -32,6 +36,10 @@ public class LMenuBar extends JMenuBar {
 			return this.withItem(title, (menu, item) -> item.addActionListener(e -> action.accept(menu, item, e)));
 		}
 
+		public LMenu withCheckBox(String title, Runnable action) {
+			return this.withCheckBox(title, (menu, checkBox, event) -> action.run());
+		}
+
 		public LMenu withCheckBox(String title, BiConsumer<LMenu, JCheckBoxMenuItem> componentCode) {
 			JCheckBoxMenuItem checkBox = new JCheckBoxMenuItem(title);
 			componentCode.accept(this, checkBox);
@@ -41,6 +49,10 @@ public class LMenuBar extends JMenuBar {
 
 		public LMenu withCheckBox(String title, TriConsumer<LMenu, JCheckBoxMenuItem, ActionEvent> action) {
 			return this.withCheckBox(title, (menu, checkBox) -> checkBox.addActionListener(e -> action.accept(menu, checkBox, e)));
+		}
+
+		public LMenu withRadioBox(String title, Runnable action) {
+			return this.withRadioBox(title, (menu, radioBox, event) -> action.run());
 		}
 
 		public LMenu withRadioBox(String title, BiConsumer<LMenu, JRadioButtonMenuItem> componentCode) {
