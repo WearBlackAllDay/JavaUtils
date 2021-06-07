@@ -31,5 +31,5 @@ build/
 build.gradle
 
 *.json
-
+*.txt
 *.MF
