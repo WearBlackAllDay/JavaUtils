@@ -5,10 +5,11 @@ plugins {
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
-            groupId = "wearblackallday"
-            artifactId = 'javautils'
+        maven(MavenPublication) {
+            groupId = "com.github.wearblackallday"
+            artifactId = "JavaUtils"
             version = "0.0.1"
+
             from components.java
         }
     }
@@ -23,7 +24,5 @@ dependencies {
     testImplementation "com.formdev:flatlaf-intellij-themes:1.1.2"
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
