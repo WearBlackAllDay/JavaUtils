@@ -1,11 +1,18 @@
 plugins {
-    id "java-library"
-    id 'maven-publish'
+    id "java"
+    id "maven-publish"
 }
 
-group = "wearblackallday"
-archivesBaseName = "JavaUtils"
-version = "0.0.1"
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = "wearblackallday"
+            artifactId = 'javautils'
+            version = "0.0.1"
+            from components.java
+        }
+    }
+}
 
 repositories {
     mavenCentral()
