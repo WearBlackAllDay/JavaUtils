@@ -1,15 +1,18 @@
-package wearblackallday.swing.components;
+package wearblackallday.javautils.swing.components;
+
+import wearblackallday.javautils.data.ArrayUtils;
 
 import javax.swing.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unchecked")
 public class SelectionBox<E> extends JComboBox<String> {
-	private final StringMapper<E> mapper;
+	private final Function<E, String> stringMapper;
 	private final E[] elements;
 
 	public SelectionBox(E... elements) {
@@ -24,17 +27,17 @@ public class SelectionBox<E> extends JComboBox<String> {
 		this(Object::toString, elements);
 	}
 
-	public SelectionBox(StringMapper<E> mapper, E... elements) {
-		this(mapper, Arrays.asList(elements));
+	public SelectionBox(Function<E, String> stringMapper, E... elements) {
+		this(stringMapper, Arrays.asList(elements));
 	}
 
-	public SelectionBox(StringMapper<E> mapper, Stream<E> elements) {
-		this(mapper, elements.collect(Collectors.toList()));
+	public SelectionBox(Function<E, String> stringMapper, Stream<E> elements) {
+		this(stringMapper, elements.collect(Collectors.toList()));
 	}
 
-	public SelectionBox(StringMapper<E> mapper, Collection<E> elements) {
-		super(elements.stream().map(mapper::map).toArray(String[]::new));
-		this.mapper = mapper;
+	public SelectionBox(Function<E, String> stringMapper, Collection<E> elements) {
+		super(elements.stream().map(stringMapper).toArray(String[]::new));
+		this.stringMapper = stringMapper;
 		this.elements = (E[])new Object[elements.size()];
 		int i = 0;
 		for(E element : elements) {
@@ -51,11 +54,11 @@ public class SelectionBox<E> extends JComboBox<String> {
 	}
 
 	public String getSelectedString() {
-		return this.mapper.map(this.getSelected());
+		return this.stringMapper.apply(this.getSelected());
 	}
 
 	public String[] getStrings() {
-		return Arrays.stream(this.elements).map(this.mapper::map).toArray(String[]::new);
+		return ArrayUtils.map(this.stringMapper, this.elements);
 	}
 
 	public boolean selectIfContains(E element) {
@@ -70,10 +73,5 @@ public class SelectionBox<E> extends JComboBox<String> {
 			}
 		}
 		return false;
-	}
-
-	@FunctionalInterface
-	public interface StringMapper<E> {
-		String map(E element);
 	}
 }

@@ -1,6 +1,6 @@
-package wearblackallday.swing.components;
+package wearblackallday.javautils.swing.components;
 
-import wearblackallday.util.TriConsumer;
+import wearblackallday.javautils.util.TriConsumer;
 
 import javax.swing.*;
 import javax.swing.event.MenuListener;

@@ -1,4 +1,4 @@
-package wearblackallday.data;
+package wearblackallday.javautils.data;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
@@ -59,7 +59,7 @@ public final class Strings {
 	}
 
 	public static String chopFirst(String string, int chars) {
-		return string.replaceFirst(Strings.getFirst(string, chars), "");
+		return string.replaceFirst(getFirst(string, chars), "");
 	}
 
 	public static String trimLeadingChars(String str, char c) {
@@ -68,6 +68,14 @@ public final class Strings {
 			if(i++ == str.length() - 1) return "";
 		}
 		return str.substring(i);
+	}
+
+	public static String padLeft(String string, int length, char pad) {
+		return String.format("%" + length + "s", string).replace(' ', pad);
+	}
+
+	public static String padRight(String string, int length, char pad) {
+		return String.format("%-" + length + "s", string).replace(' ', pad);
 	}
 
 	public static String randomAlphabetic(int length) {

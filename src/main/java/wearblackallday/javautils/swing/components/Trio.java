@@ -1,6 +1,6 @@
-package wearblackallday.swing.components;
+package wearblackallday.javautils.swing.components;
 
-import wearblackallday.swing.SwingUtils;
+import wearblackallday.javautils.swing.SwingUtils;
 
 import javax.swing.*;
 import java.awt.GridLayout;

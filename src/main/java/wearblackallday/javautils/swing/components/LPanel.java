@@ -1,7 +1,7 @@
-package wearblackallday.swing.components;
+package wearblackallday.javautils.swing.components;
 
-import wearblackallday.swing.SwingUtils;
-import wearblackallday.util.TriConsumer;
+import wearblackallday.javautils.swing.SwingUtils;
+import wearblackallday.javautils.util.TriConsumer;
 
 import javax.swing.*;
 import java.awt.Dimension;

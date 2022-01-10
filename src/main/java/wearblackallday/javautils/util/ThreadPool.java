@@ -1,4 +1,4 @@
-package wearblackallday.util;
+package wearblackallday.javautils.util;
 
 import java.util.Iterator;
 import java.util.concurrent.CountDownLatch;

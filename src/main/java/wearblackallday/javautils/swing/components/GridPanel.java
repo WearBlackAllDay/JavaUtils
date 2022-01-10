@@ -1,7 +1,7 @@
-package wearblackallday.swing.components;
+package wearblackallday.javautils.swing.components;
 
-import wearblackallday.data.ArrayUtils;
-import wearblackallday.util.ArrayIterable;
+import wearblackallday.javautils.data.ArrayUtils;
+import wearblackallday.javautils.util.ArrayIterable;
 
 import javax.swing.*;
 import java.awt.GridBagConstraints;

@@ -1,6 +1,6 @@
-package wearblackallday.util;
+package wearblackallday.javautils.util;
 
-import wearblackallday.data.ArrayUtils;
+import wearblackallday.javautils.data.ArrayUtils;
 
 import java.util.Arrays;
 import java.util.Iterator;

@@ -1,4 +1,4 @@
-package wearblackallday.data;
+package wearblackallday.javautils.data;
 
 import java.util.Random;
 import java.util.Spliterators;
@@ -11,13 +11,13 @@ public final class Ints {
 	}
 
 	public static int concat(int... ints) {
-		return concatBase(10, ints);
+		return concat((byte)10, ints);
 	}
 
-	public static int concatBase(int base, int... ints) {
+	public static int concat(byte radix, int... ints) {
 		int result = 0;
 		for(int i : ints) {
-			result *= base;
+			result *= radix;
 			result += i;
 		}
 		return result;

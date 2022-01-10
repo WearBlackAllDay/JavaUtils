@@ -1,4 +1,4 @@
-package wearblackallday.util;
+package wearblackallday.javautils.util;
 
 @FunctionalInterface
 public interface TriConsumer<A, B, C> {

@@ -1,4 +1,4 @@
-package wearblackallday.data;
+package wearblackallday.javautils.data;
 
 import java.util.*;
 import java.util.function.*;
@@ -13,6 +13,28 @@ public final class ArrayUtils {
 		}
 		return array;
 	}
+
+	@SafeVarargs
+	public static <F, T> T[] map(Function<F, T> mapper, F... origin) {
+		T[] result = (T[])new Object[origin.length];
+		for(int i = 0; i < origin.length; i++) {
+			result[i] = mapper.apply(origin[i]);
+		}
+		return result;
+	}
+
+	@SafeVarargs
+	public static <F, T> T[] flatMap(Function<F, T[]> mapper, int subLength, F... origin) {
+		T[] result = (T[])new Object[origin.length * subLength];
+		int i = 0;
+		for(F f : origin) {
+			for(T t : mapper.apply(f)) {
+				result[i++] = t;
+			}
+		}
+		return result;
+	}
+
 
 	public static <T> Iterator<T> iterator(T[] array) {
 		return new ArrayIterator<>(array);
