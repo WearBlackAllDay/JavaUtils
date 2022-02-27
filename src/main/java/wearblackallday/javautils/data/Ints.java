@@ -11,10 +11,10 @@ public final class Ints {
 	}
 
 	public static int concat(int... ints) {
-		return concat((byte)10, ints);
+		return concat(10, ints);
 	}
 
-	public static int concat(byte radix, int... ints) {
+	public static int concat(int radix, int... ints) {
 		int result = 0;
 		for(int i : ints) {
 			result *= radix;

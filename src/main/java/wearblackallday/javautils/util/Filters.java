@@ -5,10 +5,6 @@ import java.util.function.*;
 public final class Filters {
 	private Filters() {}
 
-	public static Predicate<String> notEmpty() {
-		return string -> !string.isEmpty();
-	}
-
 	public static <F, T> Predicate<F> byKey(Function<F, T> extractor, Predicate<T> condition) {
 		return object -> condition.test(extractor.apply(object));
 	}
