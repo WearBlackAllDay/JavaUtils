@@ -40,8 +40,11 @@ public class ThreadPool {
 		this.activeCount.increment();
 
 		this.executor.execute(() -> {
-			action.run();
-			this.activeCount.decrement();
+			try {
+				action.run();
+			}finally {
+			  this.activeCount.decrement();
+			}
 		});
 	}
 
