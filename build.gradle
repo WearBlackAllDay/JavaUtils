@@ -20,8 +20,8 @@ repositories {
 }
 
 dependencies {
-    testImplementation "com.formdev:flatlaf:1.1.2"
-    testImplementation "com.formdev:flatlaf-intellij-themes:1.1.2"
+    testImplementation 'com.formdev:flatlaf:2.4'
+    testImplementation 'com.formdev:flatlaf-intellij-themes:2.4'
 }
 java {
     sourceCompatibility = JavaVersion.VERSION_17

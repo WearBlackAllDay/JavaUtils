@@ -2,10 +2,7 @@ package wearblackallday.javautils.swing;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
@@ -13,6 +10,12 @@ import java.util.NoSuchElementException;
 
 public final class SwingUtils {
 	private SwingUtils() {}
+
+	public static JButton actionButton(String title, Runnable action) {
+		JButton button = new JButton(title);
+		button.addActionListener(e -> action.run());
+		return button;
+	}
 
 	public static void setPrompt(JTextComponent jTextComponent, String text) {
 		jTextComponent.setText(text);
@@ -30,7 +33,7 @@ public final class SwingUtils {
 		});
 	}
 
-	public static <C extends Container> C addSet(C container, JComponent... components) {
+	public static <C extends Container> C addAll(C container, JComponent... components) {
 		for(JComponent c : components) {
 			container.add(c);
 		}
@@ -43,14 +46,30 @@ public final class SwingUtils {
 				return (C)component;
 			}
 		}
-		throw new NoSuchElementException(container.getName() + "does not hold Object of Type " + clazz.getSimpleName());
+		throw new NoSuchElementException(container.getName() + "\sdoes not hold Object of Type\s" + clazz.getSimpleName());
 	}
 
-	public static ImageIcon colorIcon(Color c, int width, int height) {
+	public static Icon createColorIcon(Color color, int width, int height) {
 		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		Graphics g = img.createGraphics();
-		g.setColor(c);
-		g.fillRect(0, 0, width, height);
+
+		Graphics graphics = img.createGraphics();
+		graphics.setColor(color);
+		graphics.fillRect(0, 0, width, height);
+		graphics.dispose();
+
+		return new ImageIcon(img);
+	}
+
+	public static Icon createCrossIcon(int size, Color color, int thickness) {
+		BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+
+		Graphics2D graphics = img.createGraphics();
+		graphics.setColor(color);
+		graphics.setStroke(new BasicStroke(thickness));
+		graphics.drawLine(0, 0, size, size);
+		graphics.drawLine(size, 0, 0, size);
+		graphics.dispose();
+
 		return new ImageIcon(img);
 	}
 }

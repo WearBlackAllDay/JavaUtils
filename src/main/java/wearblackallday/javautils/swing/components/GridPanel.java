@@ -4,8 +4,7 @@ import wearblackallday.javautils.data.ArrayUtils;
 import wearblackallday.javautils.util.ArrayIterable;
 
 import javax.swing.*;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -43,6 +42,7 @@ public class GridPanel<C extends JComponent> extends JPanel implements ArrayIter
 		return this.components.length;
 	}
 
+	@Override
 	public C getComponent(int index) {
 		return this.components[index];
 	}
@@ -116,9 +116,26 @@ public class GridPanel<C extends JComponent> extends JPanel implements ArrayIter
 	}
 
 	@Override
+	public int getComponentCount() {
+		return this.getCount();
+	}
+
+	@Override
+	public C[] getComponents() {
+		return this.components;
+	}
+
+	@Override
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		for(C c : this.components) {
+			c.setEnabled(enabled);
+		}
+	}
+
+	@Override
 	public String toString() {
-		StringBuilder stringBuilder = new StringBuilder()
-			.append("GridPanel {\n");
+		StringBuilder stringBuilder = new StringBuilder("GridPanel {\n");
 		for(int i = 0; i < this.components.length; i++) {
 			stringBuilder
 				.append(i)

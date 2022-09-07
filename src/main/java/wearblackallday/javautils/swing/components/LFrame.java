@@ -6,6 +6,7 @@ import java.awt.LayoutManager;
 import java.awt.Toolkit;
 import java.util.function.BiConsumer;
 
+ @Deprecated(forRemoval = true)
 public class LFrame extends JFrame {
 	public LFrame() {
 		this("");

@@ -5,7 +5,7 @@ import java.awt.Container;
 import java.awt.LayoutManager;
 import java.awt.Toolkit;
 import java.util.function.BiConsumer;
-
+@Deprecated(forRemoval = true)
 public class LDialog extends JDialog {
 	public LDialog() {
 		this("");

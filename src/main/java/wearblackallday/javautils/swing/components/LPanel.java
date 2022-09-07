@@ -4,8 +4,7 @@ import wearblackallday.javautils.swing.SwingUtils;
 import wearblackallday.javautils.util.TriConsumer;
 
 import javax.swing.*;
-import java.awt.Dimension;
-import java.awt.LayoutManager;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.Map;
@@ -100,6 +99,12 @@ public class LPanel extends JPanel {
 	public <C extends JComponent> LPanel addComponent(C component, BiConsumer<LPanel, C> componentCode) {
 		componentCode.accept(this, component);
 		this.add(component);
+		return this;
+	}
+
+	@Override
+	public LPanel add(Component comp) {
+		super.add(comp);
 		return this;
 	}
 }

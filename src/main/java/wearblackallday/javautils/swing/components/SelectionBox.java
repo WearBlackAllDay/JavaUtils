@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unchecked")
@@ -20,7 +19,7 @@ public class SelectionBox<E> extends JComboBox<String> {
 	}
 
 	public SelectionBox(Stream<E> elements) {
-		this(Object::toString, elements.collect(Collectors.toList()));
+		this(Object::toString, elements.toList());
 	}
 
 	public SelectionBox(Collection<E> elements) {
@@ -32,7 +31,7 @@ public class SelectionBox<E> extends JComboBox<String> {
 	}
 
 	public SelectionBox(Function<E, String> stringMapper, Stream<E> elements) {
-		this(stringMapper, elements.collect(Collectors.toList()));
+		this(stringMapper, elements.toList());
 	}
 
 	public SelectionBox(Function<E, String> stringMapper, Collection<E> elements) {
@@ -51,6 +50,11 @@ public class SelectionBox<E> extends JComboBox<String> {
 
 	public E getSelected() {
 		return this.getElement(this.getSelectedIndex());
+	}
+
+	@Override
+	public E getSelectedItem() {
+		return this.getSelected();
 	}
 
 	public String getSelectedString() {

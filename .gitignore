@@ -33,3 +33,5 @@ build.gradle
 *.json
 *.txt
 *.MF
+
+out/test/resources/data/

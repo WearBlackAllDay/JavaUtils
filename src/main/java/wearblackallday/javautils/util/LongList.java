@@ -1,8 +1,7 @@
 package wearblackallday.javautils.util;
 
 import java.util.*;
-import java.util.function.LongConsumer;
-import java.util.function.LongUnaryOperator;
+import java.util.function.*;
 import java.util.stream.LongStream;
 
 public class LongList implements RandomAccess {
@@ -86,18 +85,18 @@ public class LongList implements RandomAccess {
 
 	public void add(int index, long l) {
 		this.ensureCapacity(this.size + 1);
+		this.size++;
 		if(index != this.size)
 			System.arraycopy(this.storage, index, this.storage, index + 1, this.size - index);
 		this.storage[index] = l;
-		this.size++;
 	}
 
 	public void addAll(LongList otherList) {
-		int size = otherList.size();
-		if(size == 0) return;
-		this.ensureCapacity(this.size + size);
-		System.arraycopy(this.storage, 0, otherList.storage, this.size, size);
-		this.size += size;
+		int otherSize = otherList.size();
+		if(otherSize == 0) return;
+		this.ensureCapacity(this.size + otherSize);
+		System.arraycopy(otherList.storage, 0, this.storage, this.size, otherSize);
+		this.size += otherSize;
 	}
 
 	public void remove(int index) {
@@ -112,6 +111,17 @@ public class LongList implements RandomAccess {
 		if(index == -1) return false;
 		this.remove(index);
 		return true;
+	}
+
+	public void removeRange(int startInclusive, int endExclusive) {
+		if(startInclusive >= endExclusive || startInclusive < 0 || endExclusive >= this.size) throw new IndexOutOfBoundsException();
+		int distance = endExclusive - startInclusive;
+		if(distance == this.size) {
+			this.clear();
+			return;
+		}
+		System.arraycopy(this.storage, endExclusive, this.storage, startInclusive, this.size - endExclusive);
+		this.size -= distance;
 	}
 
 	public void set(int index, long l) {
@@ -152,6 +162,20 @@ public class LongList implements RandomAccess {
 		for(int i = 0; i < this.size; i++) {
 			this.storage[i] = mapper.applyAsLong(this.storage[i]);
 		}
+	}
+
+	public void filter(LongPredicate filter) {
+		for(int i = 0; i < this.size; i++) {
+			if(!filter.test(this.storage[i])) this.remove(i--); //check current index again
+		}
+	}
+
+	public boolean contains(long l) {
+		return this.indexOf(l) != -1;
+	}
+
+	public void sort() {
+		Arrays.sort(this.storage, 0, this.size);
 	}
 
 	public void forEach(LongConsumer action) {

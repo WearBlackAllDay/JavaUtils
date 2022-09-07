@@ -17,7 +17,7 @@ public final class Strings {
 	}
 
 	public static String[] splitLines(String string) {
-		return string.trim().split("[\\r\\n]+");
+		return string.trim().split("[\r\n]+");
 	}
 
 	public static int countLines(String string) {
@@ -29,7 +29,7 @@ public final class Strings {
 	}
 
 	public static int[] splitToInts(String string) {
-		return splitToInts(string, "[\\r\\n]+");
+		return splitToInts(string, "[\r\n]+");
 	}
 
 	public static int[] splitToInts(String string, String regex) {
@@ -42,7 +42,7 @@ public final class Strings {
 	}
 
 	public static long[] splitToLongs(String string) {
-		return splitToLongs(string, "[\\r\\n]+");
+		return splitToLongs(string, "[\r\n]+");
 	}
 
 	public static long[] splitToLongs(String string, String regex) {
@@ -91,43 +91,6 @@ public final class Strings {
 			.limit(length)
 			.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
 			.toString();
-	}
-
-	public static String formatJSON(String uglyJSON) {
-		StringBuilder prettyJSONBuilder = new StringBuilder();
-		boolean inQuote = false;
-		for(char charFromUglyJSON : uglyJSON.toCharArray()) {
-			switch(charFromUglyJSON) {
-				case '"':
-					inQuote = !inQuote;
-					prettyJSONBuilder.append(charFromUglyJSON);
-					break;
-				case ' ':
-					if(inQuote) {
-						prettyJSONBuilder.append(charFromUglyJSON);
-					}
-					break;
-				case '{':
-				case '[':
-					prettyJSONBuilder.append(charFromUglyJSON);
-					prettyJSONBuilder.append("\n ");
-					break;
-				case '}':
-				case ']':
-					prettyJSONBuilder.append("\n ");
-					prettyJSONBuilder.append(charFromUglyJSON);
-					break;
-				case ',':
-					prettyJSONBuilder.append(charFromUglyJSON);
-					if(!inQuote) {
-						prettyJSONBuilder.append("\n ");
-					}
-					break;
-				default:
-					prettyJSONBuilder.append(charFromUglyJSON);
-			}
-		}
-		return prettyJSONBuilder.toString();
 	}
 
 	public static <T> void splitAndRun(String text, String regex, Function<String, T> mapper, Consumer<T> action) {
