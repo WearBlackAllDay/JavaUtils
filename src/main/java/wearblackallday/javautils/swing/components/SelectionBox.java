@@ -51,12 +51,7 @@ public class SelectionBox<E> extends JComboBox<String> {
 	public E getSelected() {
 		return this.getElement(this.getSelectedIndex());
 	}
-
-	@Override
-	public E getSelectedItem() {
-		return this.getSelected();
-	}
-
+	
 	public String getSelectedString() {
 		return this.stringMapper.apply(this.getSelected());
 	}
