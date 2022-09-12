@@ -36,7 +36,6 @@ public class LongList implements RandomAccess {
 	}
 
 	public LongList(Collection<Long> longs) {
-		this.size = longs.size();
 		longs.forEach(this::add);
 	}
 
@@ -133,6 +132,10 @@ public class LongList implements RandomAccess {
 		return this.size;
 	}
 
+	public int capacity() {
+		return this.storage.length;
+	}
+
 	public boolean isEmpty() {
 		return this.size == 0;
 	}
@@ -222,9 +225,12 @@ public class LongList implements RandomAccess {
 
 	@Override
 	public String toString() {
-		return "LongList{" +
-			"size=" + this.size +
-			", storage=" + Arrays.toString(this.storage) +
-			'}';
+		StringJoiner joiner = new StringJoiner(",\s", "[", "]");
+
+		for(int i = 0; i < this.size; i++) {
+			joiner.add(String.valueOf(this.storage[i]));
+		}
+
+		return joiner.toString();
 	}
 }
