@@ -1,7 +1,5 @@
 package wearblackallday.javautils.util;
 
-import wearblackallday.javautils.data.ArrayUtils;
-
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Spliterator;

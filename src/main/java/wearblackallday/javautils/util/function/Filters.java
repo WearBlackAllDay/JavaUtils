@@ -1,4 +1,4 @@
-package wearblackallday.javautils.util;
+package wearblackallday.javautils.util.function;
 
 import java.util.function.*;
 

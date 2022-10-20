@@ -1,6 +1,6 @@
 package wearblackallday.javautils.swing.components;
 
-import wearblackallday.javautils.data.ArrayUtils;
+import wearblackallday.javautils.util.ArrayUtils;
 
 import javax.swing.*;
 import java.util.Arrays;
@@ -51,13 +51,13 @@ public class SelectionBox<E> extends JComboBox<String> {
 	public E getSelected() {
 		return this.getElement(this.getSelectedIndex());
 	}
-	
+
 	public String getSelectedString() {
 		return this.stringMapper.apply(this.getSelected());
 	}
 
 	public String[] getStrings() {
-		return ArrayUtils.map(this.stringMapper, this.elements);
+		return ArrayUtils.map(this.elements, this.stringMapper);
 	}
 
 	public boolean selectIfContains(E element) {

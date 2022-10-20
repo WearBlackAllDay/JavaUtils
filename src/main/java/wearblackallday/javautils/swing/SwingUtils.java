@@ -7,6 +7,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import java.util.NoSuchElementException;
+import java.util.function.Consumer;
 
 public final class SwingUtils {
 	private SwingUtils() {}
@@ -49,25 +50,27 @@ public final class SwingUtils {
 		throw new NoSuchElementException(container.getName() + "\sdoes not hold Object of Type\s" + clazz.getSimpleName());
 	}
 
-	public static Icon createColorIcon(Color color, int width, int height) {
-		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-
-		Graphics graphics = img.createGraphics();
-		graphics.setColor(color);
-		graphics.fillRect(0, 0, width, height);
-		graphics.dispose();
-
-		return new ImageIcon(img);
+	public static Icon createColorIcon(int width, int height, Color color) {
+		return createIcon(width, height, graphics -> {
+			graphics.setColor(color);
+			graphics.fillRect(0, 0, width, height);
+		});
 	}
 
-	public static Icon createCrossIcon(int size, Color color, int thickness) {
-		BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+	public static Icon createCrossIcon(int size, int thickness, Color color) {
+		return createIcon(size, size, graphics -> {
+			graphics.setColor(color);
+			graphics.setStroke(new BasicStroke(thickness));
+			graphics.drawLine(0, 0, size, size);
+			graphics.drawLine(size, 0, 0, size);
+		});
+	}
+
+	private static Icon createIcon(int width, int height, Consumer<Graphics2D> graphicsCode) {
+		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
 		Graphics2D graphics = img.createGraphics();
-		graphics.setColor(color);
-		graphics.setStroke(new BasicStroke(thickness));
-		graphics.drawLine(0, 0, size, size);
-		graphics.drawLine(size, 0, 0, size);
+		graphicsCode.accept(graphics);
 		graphics.dispose();
 
 		return new ImageIcon(img);

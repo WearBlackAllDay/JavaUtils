@@ -1,4 +1,4 @@
-package wearblackallday.javautils.data;
+package wearblackallday.javautils.util;
 
 import java.util.Arrays;
 

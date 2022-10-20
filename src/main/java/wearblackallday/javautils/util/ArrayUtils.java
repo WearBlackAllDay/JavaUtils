@@ -1,4 +1,4 @@
-package wearblackallday.javautils.data;
+package wearblackallday.javautils.util;
 
 import java.util.*;
 import java.util.function.*;
@@ -6,35 +6,35 @@ import java.util.function.*;
 public final class ArrayUtils {
 	private ArrayUtils() {}
 
-	public static <T> T[] objectArray(int length, Supplier<T> filler) {
-		T[] array = (T[])new Object[length];
-		for(int i = 0; i < length; i++) {
-			array[i] = filler.get();
-		}
-		return array;
-	}
-
-	@SafeVarargs
-	public static <F, T> T[] map(Function<F, T> mapper, F... origin) {
+	public static <F, T> T[] map(F[] origin, Function<F, T> mapper) {
 		T[] result = (T[])new Object[origin.length];
-		for(int i = 0; i < origin.length; i++) {
-			result[i] = mapper.apply(origin[i]);
-		}
+		Arrays.setAll(result, i -> mapper.apply(origin[i]));
 		return result;
 	}
 
-	@SafeVarargs
-	public static <F, T> T[] flatMap(Function<F, T[]> mapper, int subLength, F... origin) {
-		T[] result = (T[])new Object[origin.length * subLength];
-		int i = 0;
-		for(F f : origin) {
-			for(T t : mapper.apply(f)) {
-				result[i++] = t;
-			}
-		}
-		return result;
+	public static <F, T> T[] flatMap(F[] origin, Function<F, T[]> mapper) {
+		T[][] buffer = (T[][])new Object[origin.length][];
+		Arrays.setAll(buffer, i -> mapper.apply(origin[i]));
+		return flatten(buffer);
 	}
 
+	public static <T> T[] flatten(T[][] array) {
+		int newLength = 0;
+
+		for(T[] subArray : array) {
+			newLength += subArray.length;
+		}
+
+		T[] result = (T[])new Object[newLength];
+		int totalIndex = 0;
+
+		for(T[] subArray : array) {
+			System.arraycopy(subArray, 0, result, totalIndex, subArray.length);
+			totalIndex += subArray.length;
+		}
+
+		return result;
+	}
 
 	public static <T> Iterator<T> iterator(T[] array) {
 		return new ArrayIterator<>(array);

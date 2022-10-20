@@ -1,10 +1,11 @@
 package wearblackallday.javautils.swing.components;
 
-import wearblackallday.javautils.data.ArrayUtils;
+import wearblackallday.javautils.util.ArrayUtils;
 import wearblackallday.javautils.util.ArrayIterable;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -143,8 +144,7 @@ public class GridPanel<C extends JComponent> extends JPanel implements ArrayIter
 				.append(this.components[i].toString())
 				.append("\n");
 		}
-		stringBuilder.append("}");
-		return stringBuilder.toString();
+		return stringBuilder.append("}").toString();
 	}
 
 	@Override

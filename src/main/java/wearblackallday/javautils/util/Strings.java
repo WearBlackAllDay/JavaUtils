@@ -1,4 +1,4 @@
-package wearblackallday.javautils.data;
+package wearblackallday.javautils.util;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
@@ -14,44 +14,6 @@ public final class Strings {
 
 	public static void clipboard(String string) {
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(string), null);
-	}
-
-	public static String[] splitLines(String string) {
-		return string.trim().split("[\r\n]+");
-	}
-
-	public static int countLines(String string) {
-		return Strings.splitLines(string).length;
-	}
-
-	public static String removeEmptyLines(String string) {
-		return string.replaceAll("(?m)^[ \\t]*\\r?\\n", "");
-	}
-
-	public static int[] splitToInts(String string) {
-		return splitToInts(string, "[\r\n]+");
-	}
-
-	public static int[] splitToInts(String string, String regex) {
-		String[] lines = string.split(regex);
-		int[] ints = new int[lines.length];
-		for(int i = 0; i < ints.length; i++) {
-			ints[i] = Integer.parseInt(lines[i]);
-		}
-		return ints;
-	}
-
-	public static long[] splitToLongs(String string) {
-		return splitToLongs(string, "[\r\n]+");
-	}
-
-	public static long[] splitToLongs(String string, String regex) {
-		String[] lines = string.split(regex);
-		long[] longs = new long[lines.length];
-		for(int i = 0; i < longs.length; i++) {
-			longs[i] = Long.parseLong(lines[i]);
-		}
-		return longs;
 	}
 
 	public static String getFirst(String string, int chars) {

@@ -1,6 +1,6 @@
 package wearblackallday.javautils.swing.components;
 
-import wearblackallday.javautils.data.Strings;
+import wearblackallday.javautils.util.Strings;
 
 import javax.swing.*;
 import java.awt.Dimension;
