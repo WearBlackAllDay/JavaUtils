@@ -40,8 +40,11 @@ public class ThreadPool {
 		this.activeCount.increment();
 
 		this.executor.execute(() -> {
-			action.run();
-			this.activeCount.decrement();
+			try {
+				action.run();
+			} finally {
+				this.activeCount.decrement();
+			}
 		});
 	}
 
@@ -89,12 +92,12 @@ public class ThreadPool {
 		for(int t : array) this.execute(() -> action.accept(t));
 	}
 
-	public void execute(float[] array, Consumer<Float> action) {
-		for(float t : array) this.execute(() -> action.accept(t));
-	}
-
 	public void execute(long[] array, LongConsumer action) {
 		for(long t : array) this.execute(() -> action.accept(t));
+	}
+
+	public void execute(float[] array, Consumer<Float> action) {
+		for(float t : array) this.execute(() -> action.accept(t));
 	}
 
 	public void execute(double[] array, DoubleConsumer action) {
