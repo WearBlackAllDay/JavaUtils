@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+@Deprecated(forRemoval = true)
 public class LMenuBar extends JMenuBar {
 	public LMenuBar addMenu(String title, Consumer<LMenu> buildCode) {
 		LMenu newMenu = new LMenu(title);

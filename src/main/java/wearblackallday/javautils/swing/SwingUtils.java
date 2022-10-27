@@ -8,6 +8,7 @@ import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public final class SwingUtils {
 	private SwingUtils() {}
@@ -41,6 +42,12 @@ public final class SwingUtils {
 		return container;
 	}
 
+	public static <C extends Component> C createComponent(Supplier<C> supplier, Consumer<C> code) {
+		C component = supplier.get();
+		code.accept(component);
+		return component;
+	}
+
 	public static <C extends Component> C getClassChild(Container container, Class<C> clazz) {
 		for(Component component : container.getComponents()) {
 			if(clazz.isInstance(component)) {
@@ -66,7 +73,7 @@ public final class SwingUtils {
 		});
 	}
 
-	private static Icon createIcon(int width, int height, Consumer<Graphics2D> graphicsCode) {
+	public static Icon createIcon(int width, int height, Consumer<Graphics2D> graphicsCode) {
 		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
 		Graphics2D graphics = img.createGraphics();

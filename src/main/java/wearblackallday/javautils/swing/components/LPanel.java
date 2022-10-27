@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
+@Deprecated(forRemoval = true)
 public class LPanel extends JPanel {
 	private final Map<String, JTextField> textFields = new HashMap<>();
 	private Dimension standardDimension = null;
