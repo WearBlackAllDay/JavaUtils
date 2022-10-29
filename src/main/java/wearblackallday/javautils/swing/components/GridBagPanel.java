@@ -99,8 +99,9 @@ public class GridBagPanel extends JPanel {
 		return (GridBagLayout)super.getLayout();
 	}
 
-//	@Override
-//	public void setLayout(LayoutManager mgr) {
-//		throw new UnsupportedOperationException();
-//	}
+	@Override
+	public void setLayout(LayoutManager mgr) {
+		if(this.getLayout() == null) super.setLayout(mgr);
+		else throw new UnsupportedOperationException();
+	}
 }
