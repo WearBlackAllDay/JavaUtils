@@ -20,6 +20,10 @@ public class ByteSlice implements Closeable {
 		this.out = out;
 	}
 
+	public static ByteSlice fromResource(String resource) {
+		return new ByteSlice(ByteSlice.class.getResourceAsStream(resource));
+	}
+
 	public static ByteSlice fromInputFile(String file) throws FileNotFoundException {
 		return new ByteSlice(new FileInputStream(file));
 	}
@@ -50,13 +54,13 @@ public class ByteSlice implements Closeable {
 		return this;
 	}
 
-	public ByteSlice writeByte(int v) throws IOException {
-		this.out.write(v);
+	public ByteSlice writeByte(int b) throws IOException {
+		this.out.write(b);
 		return this;
 	}
 
 	public int readUnsignedShort() throws IOException {
-		return (this.in.read() << 8) + this.in.read();
+		return (this.in.read() << 8) | this.in.read();
 	}
 
 	public short readShort() throws IOException {
@@ -70,7 +74,7 @@ public class ByteSlice implements Closeable {
 	}
 
 	public int readInt() throws IOException {
-		return (this.in.read() << 24) + (this.in.read() << 16) + (this.in.read() << 8) + this.in.read();
+		return (this.in.read() << 24) | (this.in.read() << 16) | (this.in.read() << 8) | this.in.read();
 	}
 
 	public ByteSlice writeInt(int i) throws IOException {
@@ -82,15 +86,34 @@ public class ByteSlice implements Closeable {
 		return this;
 	}
 
+	public long readUnsigned48bits() throws IOException {
+		return ((long)this.read() << 40)
+			| ((long)this.read() << 32)
+			| ((long)this.read() << 24)
+			| ((long)this.read() << 16)
+			| ((long)this.read() << 8)
+			| this.read();
+	}
+
+	public ByteSlice write48Bits(long l) throws IOException {
+		this.out.write((byte)(l >>> 40));
+		this.out.write((byte)(l >>> 32));
+		this.out.write((byte)(l >>> 24));
+		this.out.write((byte)(l >>> 16));
+		this.out.write((byte)(l >>> 8));
+		this.out.write((byte)l);
+		return this;
+	}
+
 	public long readLong() throws IOException {
 		return ((long)this.read() << 56)
-			+ ((long)this.read() << 48)
-			+ ((long)this.read() << 40)
-			+ ((long)this.read() << 32)
-			+ ((long)this.read() << 24)
-			+ ((long)this.read() << 16)
-			+ ((long)this.read() << 8)
-			+ this.read();
+			| ((long)this.read() << 48)
+			| ((long)this.read() << 40)
+			| ((long)this.read() << 32)
+			| ((long)this.read() << 24)
+			| ((long)this.read() << 16)
+			| ((long)this.read() << 8)
+			| this.read();
 	}
 
 	public ByteSlice writeLong(long l) throws IOException {
