@@ -36,6 +36,26 @@ public final class ArrayUtils {
 		return result;
 	}
 
+	public static <T> T max(T[] array, Comparator<T> comparator) {
+		T max = array[0];
+
+		for(T t : array) {
+			if(comparator.compare(t, max) > 0) max = t;
+		}
+
+		return max;
+	}
+
+	public static <T> T min(T[] array, Comparator<T> comparator) {
+		T min = array[0];
+
+		for(T t : array) {
+			if(comparator.compare(t, min) < 0) min = t;
+		}
+
+		return min;
+	}
+
 	public static <T> Iterator<T> iterator(T[] array) {
 		return new ArrayIterator<>(array);
 	}

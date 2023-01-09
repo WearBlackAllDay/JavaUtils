@@ -1,22 +1,36 @@
 package wearblackallday.javautils.util;
 
 import java.util.*;
+import java.util.function.IntBinaryOperator;
 import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
 
 public final class Ints {
+
+	public static final IntBinaryOperator SUBTRACT = (a, b) -> a - b;
+	public static final IntBinaryOperator MULTIPLY = (a, b) -> a * b;
+	public static final IntBinaryOperator DIVIDE = (a, b) -> a / b;
+
 	private Ints() {
 	}
 
 	public static int concat(int... ints) {
-		return concat(10, ints);
+		return concat((short)10, ints);
 	}
 
-	public static int concat(int radix, int... ints) {
+	public static int concat(short radix, int... ints) {
 		int result = 0;
 		for(int i : ints) {
 			result *= radix;
+			result += i;
+		}
+		return result;
+	}
+
+	public static int sum(int... ints) {
+		int result = 0;
+		for(int i : ints) {
 			result += i;
 		}
 		return result;
@@ -32,6 +46,10 @@ public final class Ints {
 
 	public static boolean inRange(int i, int minInclusive, int maxExclusive) {
 		return i >= minInclusive && i < maxExclusive;
+	}
+
+	public static boolean inRangeClosed(int i, int bound) {
+		return i >= 0 && i <= bound;
 	}
 
 	public static boolean inRangeClosed(int i, int minInclusive, int maxInclusive) {

@@ -43,7 +43,7 @@ public final class Strings {
 	public static String randomAlphabetic(int length) {
 		return RANDOM.ints(97, 123)
 			.limit(length)
-			.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+			.collect(() -> new StringBuilder(length), StringBuilder::appendCodePoint, StringBuilder::append)
 			.toString();
 	}
 
@@ -51,7 +51,7 @@ public final class Strings {
 		return RANDOM.ints(48, 123)
 			.filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
 			.limit(length)
-			.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+			.collect(() -> new StringBuilder(length), StringBuilder::appendCodePoint, StringBuilder::append)
 			.toString();
 	}
 

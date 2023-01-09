@@ -13,12 +13,6 @@ import java.util.function.Supplier;
 public final class SwingUtils {
 	private SwingUtils() {}
 
-	public static JButton actionButton(String title, Runnable action) {
-		JButton button = new JButton(title);
-		button.addActionListener(e -> action.run());
-		return button;
-	}
-
 	public static void setPrompt(JTextComponent jTextComponent, String text) {
 		jTextComponent.setText(text);
 		jTextComponent.setToolTipText(text);
@@ -55,6 +49,16 @@ public final class SwingUtils {
 			}
 		}
 		throw new NoSuchElementException(container.getName() + "\sdoes not hold Object of Type\s" + clazz.getSimpleName());
+	}
+
+	public static void deepSetEnabled(Component component, boolean enabled) {
+		component.setEnabled(enabled);
+
+		if(component instanceof Container parent) {
+			for(Component child : parent.getComponents()) {
+				deepSetEnabled(child, enabled);
+			}
+		}
 	}
 
 	public static Icon createColorIcon(int width, int height, Color color) {

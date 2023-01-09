@@ -20,8 +20,9 @@ repositories {
 }
 
 dependencies {
-    testImplementation "com.formdev:flatlaf:2.5"
-    testImplementation "com.formdev:flatlaf-intellij-themes:2.5"
+    testImplementation "com.formdev:flatlaf:3.0"
+    testImplementation "com.formdev:flatlaf-intellij-themes:3.0"
+    testImplementation "org.junit.jupiter:junit-jupiter:5.9.0"
 }
 
 java {
