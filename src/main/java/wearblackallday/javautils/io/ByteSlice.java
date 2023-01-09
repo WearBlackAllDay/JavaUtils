@@ -40,8 +40,8 @@ public class ByteSlice implements Closeable {
 		return this.in.read();
 	}
 
-	public ByteSlice write(int b) throws IOException {
-		this.out.write(b);
+	public ByteSlice write(int u8) throws IOException {
+		this.out.write(u8);
 		return this;
 	}
 
@@ -49,82 +49,76 @@ public class ByteSlice implements Closeable {
 		return this.read() != 0;
 	}
 
-	public ByteSlice writeBoolean(boolean b) throws IOException {
-		this.out.write(b ? 1 : 0);
-		return this;
-	}
-
-	public ByteSlice writeByte(int b) throws IOException {
-		this.out.write(b);
+	public ByteSlice writeBoolean(boolean bool) throws IOException {
+		this.out.write(bool ? 1 : 0);
 		return this;
 	}
 
 	public int readUnsignedShort() throws IOException {
-		return (this.in.read() << 8) | this.in.read();
+		return this.in.read() << 8 | this.in.read();
 	}
 
 	public short readShort() throws IOException {
 		return (short)this.readUnsignedShort();
 	}
 
-	public ByteSlice writeShort(short s) throws IOException {
-		this.out.write((s >>> 8) & 0xff);
-		this.out.write(s & 0xff);
+	public ByteSlice writeShort(short i16) throws IOException {
+		this.out.write((byte)(i16 >>> 8));
+		this.out.write((byte)i16);
 		return this;
 	}
 
 	public int readInt() throws IOException {
-		return (this.in.read() << 24) | (this.in.read() << 16) | (this.in.read() << 8) | this.in.read();
+		return this.read() << 24 | this.read() << 16 | this.read() << 8 | this.read();
 	}
 
-	public ByteSlice writeInt(int i) throws IOException {
-		this.out.write((i >>> 24) & 0xff);
-		this.out.write((i >>> 16) & 0xff);
-		this.out.write((i >>> 8) & 0xff);
-		this.out.write(i & 0xff);
-
+	public ByteSlice writeInt(int i32) throws IOException {
+		this.out.write((byte)(i32 >>> 24));
+		this.out.write((byte)(i32 >>> 16));
+		this.out.write((byte)(i32 >>> 8));
+		this.out.write((byte)i32);
 		return this;
 	}
 
 	public long readUnsigned48bits() throws IOException {
-		return ((long)this.read() << 40)
-			| ((long)this.read() << 32)
-			| ((long)this.read() << 24)
-			| ((long)this.read() << 16)
-			| ((long)this.read() << 8)
-			| this.read();
+		return (long)this.read() << 40
+			 | (long)this.read() << 32
+			 | (long)this.read() << 24
+			 | (long)this.read() << 16
+			 | (long)this.read() << 8
+			 | this.read();
 	}
 
-	public ByteSlice write48Bits(long l) throws IOException {
-		this.out.write((byte)(l >>> 40));
-		this.out.write((byte)(l >>> 32));
-		this.out.write((byte)(l >>> 24));
-		this.out.write((byte)(l >>> 16));
-		this.out.write((byte)(l >>> 8));
-		this.out.write((byte)l);
+	public ByteSlice write48Bits(long u48) throws IOException {
+		this.out.write((byte)(u48 >>> 40));
+		this.out.write((byte)(u48 >>> 32));
+		this.out.write((byte)(u48 >>> 24));
+		this.out.write((byte)(u48 >>> 16));
+		this.out.write((byte)(u48 >>> 8));
+		this.out.write((byte)u48);
 		return this;
 	}
 
 	public long readLong() throws IOException {
-		return ((long)this.read() << 56)
-			| ((long)this.read() << 48)
-			| ((long)this.read() << 40)
-			| ((long)this.read() << 32)
-			| ((long)this.read() << 24)
-			| ((long)this.read() << 16)
-			| ((long)this.read() << 8)
-			| this.read();
+		return (long)this.read() << 56
+			 | (long)this.read() << 48
+			 | (long)this.read() << 40
+			 | (long)this.read() << 32
+			 | (long)this.read() << 24
+			 | (long)this.read() << 16
+			 | (long)this.read() << 8
+			 | this.read();
 	}
 
-	public ByteSlice writeLong(long l) throws IOException {
-		this.out.write((byte)(l >>> 56));
-		this.out.write((byte)(l >>> 48));
-		this.out.write((byte)(l >>> 40));
-		this.out.write((byte)(l >>> 32));
-		this.out.write((byte)(l >>> 24));
-		this.out.write((byte)(l >>> 16));
-		this.out.write((byte)(l >>> 8));
-		this.out.write((byte)l);
+	public ByteSlice writeLong(long i64) throws IOException {
+		this.out.write((byte)(i64 >>> 56));
+		this.out.write((byte)(i64 >>> 48));
+		this.out.write((byte)(i64 >>> 40));
+		this.out.write((byte)(i64 >>> 32));
+		this.out.write((byte)(i64 >>> 24));
+		this.out.write((byte)(i64 >>> 16));
+		this.out.write((byte)(i64 >>> 8));
+		this.out.write((byte)i64);
 		return this;
 	}
 
@@ -132,16 +126,16 @@ public class ByteSlice implements Closeable {
 		return Float.intBitsToFloat(this.readInt());
 	}
 
-	public ByteSlice writeFloat(float f) throws IOException {
-		return this.writeInt(Float.floatToIntBits(f));
+	public ByteSlice writeFloat(float f32) throws IOException {
+		return this.writeInt(Float.floatToIntBits(f32));
 	}
 
 	public double readDouble() throws IOException {
 		return Double.longBitsToDouble(this.readLong());
 	}
 
-	public ByteSlice writeDouble(double d) throws IOException {
-		return this.writeLong(Double.doubleToLongBits(d));
+	public ByteSlice writeDouble(double f64) throws IOException {
+		return this.writeLong(Double.doubleToLongBits(f64));
 	}
 
 	public char readChar(Encoding encoding) throws IOException {
@@ -153,7 +147,7 @@ public class ByteSlice implements Closeable {
 
 	public ByteSlice writeChar(char c, Encoding encoding) throws IOException {
 		return switch(encoding) {
-			case ASCII -> this.writeByte((byte)c);
+			case ASCII -> this.write((byte)c);
 			case UTF_16 -> this.writeShort((short)c);
 		};
 	}
@@ -178,6 +172,7 @@ public class ByteSlice implements Closeable {
 		return this;
 	}
 
+	@Override
 	public void close() throws IOException {
 		if(this.in != null) this.in.close();
 		if(this.out != null) this.out.close();
